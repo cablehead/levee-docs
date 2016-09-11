@@ -2,13 +2,18 @@
     "docs": [
         {
             "location": "/", 
-            "text": "_\n\n\n_ is for utilities\n\n\n\n\n_.stat(path)\n\n\nReturns \nerr\n, \nstatinfo\n for the file pointed to by path where \nstatinfo\n is\n  a \nStat\n object.\n\n\n\n\nHub\n\n\nCoroutines\n\n\n\n\n:sleep(ms)\n\n\nSuspends the current green thread until at least \nms\n milliseconds in the\n  future, when it will be resumed.\n\n\n:spawn(f)\n\n\nSpawns and queues to run the callable \nf\n as a new green thread. The current\n  thread will yield to be resumed after 1 tick of the event loop.\n\n\n:spawn_later(ms, f)\n\n\nSchedules the callable \nf\n to run at least \nms\n milliseconds in the future,\n  in a new green thread.\n\n\n\n\nlocal h = require(\nlevee\n)\n\nh:spawn(function()\n  while true do\n    print(\ntick\n)\n    h:sleep(1000)\n  end\nend)\n\nh:sleep(500)\n\nwhile true do\n  print(\ntock\n)\n  h:sleep(1000)\nend\n\n\n\n\nNetwork\n\n\n\n\n.stream:dial(port, [host])\n\n\nEstablishes a streamed network connection with \nport\n and \nhost\n. \nhost\n\n  defaults to \nlocalhost\n. Returns \nerr\n, \nio.RW\n\n\n\n\nio\n\n\nR\n\n\n\n\n:read(buf, len)\n\n\nReads up to \nlen\n bytes into \nbuf\n. Returns \nerr\n, \nn\n where \nn\n is the\n  number of bytes actually read\n\n\n\n\nW\n\n\n\n\n:write(buf, len)\n\n\nWrites \nlen\n bytes of \nbuf\n. Returns \nerr\n.", 
+            "text": "_\n\n\n_ is for utilities\n\n\n\n\n_.stat(path)\n\n\nReturns \nerr\n, \nstatinfo\n for the file pointed to by path where \nstatinfo\n is\n  a \nStat\n object.\n\n\n\n\nStat\n\n\n\n\n:is_reg()\n\n\nReturns \ntrue\n if this is a regular file.\n\n\n:is_dir()\n\n\nReturns \ntrue\n if this is a directory.\n\n\n\n\nHub\n\n\nCoroutines\n\n\n\n\n:sleep(ms)\n\n\nSuspends the current green thread until at least \nms\n milliseconds in the\n  future, when it will be resumed.\n\n\n:spawn(f)\n\n\nSpawns and queues to run the callable \nf\n as a new green thread. The current\n  thread will yield to be resumed after 1 tick of the event loop.\n\n\n:spawn_later(ms, f)\n\n\nSchedules the callable \nf\n to run at least \nms\n milliseconds in the future,\n  in a new green thread.\n\n\n\n\nlocal h = require(\nlevee\n)\n\nh:spawn(function()\n  while true do\n    print(\ntick\n)\n    h:sleep(1000)\n  end\nend)\n\nh:sleep(500)\n\nwhile true do\n  print(\ntock\n)\n  h:sleep(1000)\nend\n\n\n\n\nNetwork\n\n\n\n\n.stream:dial(port, [host])\n\n\nEstablishes a streamed network connection with \nport\n and \nhost\n. \nhost\n\n  defaults to \nlocalhost\n. Returns \nerr\n, \nio.RW\n\n\n\n\nio\n\n\nR\n\n\n\n\n:read(buf, len)\n\n\nReads up to \nlen\n bytes into \nbuf\n. Returns \nerr\n, \nn\n where \nn\n is the\n  number of bytes actually read\n\n\n\n\nW\n\n\n\n\n:write(buf, len)\n\n\nWrites \nlen\n bytes of \nbuf\n. Returns \nerr\n.", 
             "title": "Home"
         }, 
         {
             "location": "/#95", 
             "text": "_ is for utilities   _.stat(path)  Returns  err ,  statinfo  for the file pointed to by path where  statinfo  is\n  a  Stat  object.", 
             "title": "_"
+        }, 
+        {
+            "location": "/#stat", 
+            "text": ":is_reg()  Returns  true  if this is a regular file.  :is_dir()  Returns  true  if this is a directory.", 
+            "title": "Stat"
         }, 
         {
             "location": "/#hub", 

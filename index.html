@@ -90,6 +90,9 @@
     
         <li class="first-level active"><a href="#95">_</a></li>
         
+            <li class="second-level"><a href="#stat">Stat</a></li>
+            
+        
     
         <li class="first-level "><a href="#hub">Hub</a></li>
         
@@ -118,7 +121,14 @@
 <dl>
 <dt>_.stat(path)</dt>
 <dd>Returns <code>err</code>, <code>statinfo</code> for the file pointed to by path where <code>statinfo</code> is
-  a <code>Stat</code> object.</dd>
+  a <a href="#stat">Stat</a> object.</dd>
+</dl>
+<h2 id="stat">Stat</h2>
+<dl>
+<dt>:is_reg()</dt>
+<dd>Returns <code>true</code> if this is a regular file.</dd>
+<dt>:is_dir()</dt>
+<dd>Returns <code>true</code> if this is a directory.</dd>
 </dl>
 <h1 id="hub">Hub</h1>
 <h2 id="coroutines">Coroutines</h2>
@@ -220,5 +230,5 @@ end
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-09-11 22:26:26.966882
+Build Date UTC : 2016-09-11 22:31:43.120402
 -->
