@@ -1,0 +1,6 @@
+site_name: Levee Documentation
+
+theme_dir: cinder
+
+markdown_extensions:
+    - def_list
