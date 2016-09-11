@@ -14,6 +14,28 @@
 :is_dir()
 : Returns `true` if this is a directory.
 
+# d
+
+d is for data structure like things
+
+## buffer
+
+# p
+
+p is for parsing / protocol jobbies
+
+## json
+
+p.json.decode(buf, len)
+: Decode the JSON compliant string `buf`, `len`. `buf` can be a Lua string.
+  Returns `err`, `data`.
+
+```lua
+local p = require("levee").p
+
+local err, data = p.json.decode([[{"foo": "bar"}]])
+print(data.foo)  -- "bar"
+```
 
 # Hub
 
