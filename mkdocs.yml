@@ -4,3 +4,5 @@ theme_dir: cinder
 
 markdown_extensions:
     - def_list
+
+repo_url: https://github.com/imgix/levee

@@ -4,7 +4,16 @@
 
 \_.stat(path)
 : Returns `err`, `statinfo` for the file pointed to by path where `statinfo` is
-  a `Stat` object.
+  a [Stat](#stat) object.
+
+## Stat
+
+:is_reg()
+: Returns `true` if this is a regular file.
+
+:is_dir()
+: Returns `true` if this is a directory.
+
 
 # Hub
 
