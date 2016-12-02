@@ -203,7 +203,7 @@ end
 <pre><code class="lua">local h = require(&quot;levee&quot;).Hub()
 
 local stdin = h.io:stdio()
-local stream stdin:stream()
+local stream = stdin:stream()
 
 while true do
   local err, line = stream:line()
@@ -289,5 +289,5 @@ end
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-12-02 19:29:39.002690
+Build Date UTC : 2016-12-02 19:43:45.092120
 -->
