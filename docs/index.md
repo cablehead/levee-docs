@@ -80,7 +80,7 @@ end
 local h = require("levee").Hub()
 
 local stdin = h.io:stdio()
-local stream stdin:stream()
+local stream = stdin:stream()
 
 while true do
   local err, line = stream:line()
