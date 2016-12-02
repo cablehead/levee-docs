@@ -54,7 +54,7 @@ print(data.foo)  -- "bar"
   in a new green thread.
 
 ```lua
-local h = require("levee")
+local h = require("levee").Hub()
 
 h:spawn(function()
   while true do
@@ -71,13 +71,35 @@ while true do
 end
 ```
 
+## IO
+
+.io:stdin()
+: Returns an [io.R](#r) object to work with this processes stdin
+
+```lua
+local h = require("levee").Hub()
+
+local stdin = h.io:stdio()
+local stream stdin:stream()
+
+while true do
+  local err, line = stream:line()
+  if err then break end
+  print(line)
+end
+```
+
+.io:stdout()
+: Returns an [io.W](#w) object to work with this processes stdout
+
+
 ## Network
 
 .stream:dial(port, [host])
 : Establishes a streamed network connection with `port` and `host`. `host`
   defaults to `localhost`. Returns `err`, [io.RW](#io)
 
-# io
+# IO
 
 ## R
 
@@ -85,7 +107,12 @@ end
 : Reads up to `len` bytes into `buf`. Returns `err`, `n` where `n` is the
   number of bytes actually read
 
+:stream()
+: Returns an [io.Stream](#io)
+
 ## W
 
 :write(buf, len)
 : Writes `len` bytes of `buf`. Returns `err`.
+
+## Stream
