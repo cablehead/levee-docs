@@ -116,3 +116,11 @@ end
 : Writes `len` bytes of `buf`. Returns `err`.
 
 ## Stream
+
+A stream is a combination of an `io.R` and a `d.Buffer`.
+
+:readin(n)
+: Reads additional bytes into this stream's buffer. `n` is optional. If
+  supplied this call will block until at least `n` bytes are available in the
+  buffer. If that many bytes are already available, it will return immediately.
+  Otherwise this call will block until one successful read has been made.
