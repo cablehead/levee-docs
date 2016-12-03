@@ -236,7 +236,15 @@ end
 <dt>:write(buf, len)</dt>
 <dd>Writes <code>len</code> bytes of <code>buf</code>. Returns <code>err</code>.</dd>
 </dl>
-<h2 id="stream">Stream</h2></div>
+<h2 id="stream">Stream</h2>
+<p>A stream is a combination of an <code>io.R</code> and a <code>d.Buffer</code>.</p>
+<dl>
+<dt>:readin(n)</dt>
+<dd>Reads additional bytes into this stream's buffer. <code>n</code> is optional. If
+  supplied this call will block until at least <code>n</code> bytes are available in the
+  buffer. If that many bytes are already available, it will return immediately.
+  Otherwise this call will block until one successful read has been made.</dd>
+</dl></div>
         
     </div>
 
@@ -289,5 +297,5 @@ end
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-12-02 19:43:45.092120
+Build Date UTC : 2016-12-03 00:58:57.100263
 -->
