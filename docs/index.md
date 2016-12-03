@@ -2,6 +2,22 @@
 
 \_ is for utilities
 
+## Network
+
+\_.endpoint_in(host, port)
+: Returns `ep` an IPV4 [Endpoint](#endpoint) for the given `host` and `port`.
+
+\_.sendto(no, who, buf, len)
+: Sends `buf`, `len` over file descriptor `no` to [Endpoint](#endpoint) `who`. Returns
+  `err`, `n`, where `n` is the number of characters sent on success.
+
+\_.recvfrom(no, buf, len)
+: Receives from file descriptor `no` into `buf`, `len`. Returns `err`, `who`,
+  `n` where `who` is an [Endpoint](#endpoint) object of the sender and `n` is
+  the number of bytes received.
+
+## File System
+
 \_.stat(path)
 : Returns `err`, `statinfo` for the file pointed to by path where `statinfo` is
   a [Stat](#stat) object.
