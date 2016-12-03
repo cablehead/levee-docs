@@ -90,6 +90,12 @@
     
         <li class="first-level active"><a href="#95">_</a></li>
         
+            <li class="second-level"><a href="#network">Network</a></li>
+            
+        
+            <li class="second-level"><a href="#file-system">File System</a></li>
+            
+        
             <li class="second-level"><a href="#stat">Stat</a></li>
             
         
@@ -114,7 +120,7 @@
             <li class="second-level"><a href="#io">IO</a></li>
             
         
-            <li class="second-level"><a href="#network">Network</a></li>
+            <li class="second-level"><a href="#network_1">Network</a></li>
             
         
     
@@ -136,6 +142,19 @@
 
 <h1 id="95">_</h1>
 <p>_ is for utilities</p>
+<h2 id="network">Network</h2>
+<dl>
+<dt>_.endpoint_in(host, port)</dt>
+<dd>Returns <code>ep</code> an IPV4 <a href="#endpoint">Endpoint</a> for the given <code>host</code> and <code>port</code>.</dd>
+<dt>_.sendto(no, who, buf, len)</dt>
+<dd>Sends <code>buf</code>, <code>len</code> over file descriptor <code>no</code> to <a href="#endpoint">Endpoint</a> <code>who</code>. Returns
+  <code>err</code>, <code>n</code>, where <code>n</code> is the number of characters sent on success.</dd>
+<dt>_.recvfrom(no, buf, len)</dt>
+<dd>Receives from file descriptor <code>no</code> into <code>buf</code>, <code>len</code>. Returns <code>err</code>, <code>who</code>,
+  <code>n</code> where <code>who</code> is an <a href="#endpoint">Endpoint</a> object of the sender and <code>n</code> is
+  the number of bytes received.</dd>
+</dl>
+<h2 id="file-system">File System</h2>
 <dl>
 <dt>_.stat(path)</dt>
 <dd>Returns <code>err</code>, <code>statinfo</code> for the file pointed to by path where <code>statinfo</code> is
@@ -216,7 +235,7 @@ end
 <dt>.io:stdout()</dt>
 <dd>Returns an <a href="#w">io.W</a> object to work with this processes stdout</dd>
 </dl>
-<h2 id="network">Network</h2>
+<h2 id="network_1">Network</h2>
 <dl>
 <dt>.stream:dial(port, [host])</dt>
 <dd>Establishes a streamed network connection with <code>port</code> and <code>host</code>. <code>host</code>
@@ -297,5 +316,5 @@ end
 
 <!--
 MkDocs version : 0.15.3
-Build Date UTC : 2016-12-03 00:58:57.100263
+Build Date UTC : 2016-12-03 03:26:45.829158
 -->
