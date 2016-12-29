@@ -61,6 +61,11 @@ r:read(buf, len)
 : Reads up to `len` bytes into `buf`. Returns `err`, `n` where `n` is the
   number of bytes actually read
 
+r:readn(buf, n, [len])
+: Reads *at least* `n` bytes into `buf`, but *no more* then `len`. `len`
+  defaults to `n`. Returns `err`, `n` where `n` is the number of bytes actually
+  read
+
 r:stream()
 : Returns an [io.Stream](#iostream)
 
