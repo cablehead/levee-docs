@@ -62,7 +62,7 @@ print(data.foo)  -- "bar"
   number of bytes actually read
 
 :stream()
-: Returns an [io.Stream](#io)
+: Returns an [io.Stream](#iostream)
 
 ## io.W
 
@@ -71,13 +71,14 @@ print(data.foo)  -- "bar"
 
 ## io.Stream
 
-A stream is a combination of an `io.R` and a `d.Buffer`.
+A stream is a combination of an [io.R](#ior) and a [d.Buffer](#dbuffer).
 
 :readin(n)
 : Reads additional bytes into this stream's buffer. `n` is optional. If
-  supplied this call will block until at least `n` bytes are available in the
+  supplied this call will block until *at least* `n` bytes are available in the
   buffer. If that many bytes are already available, it will return immediately.
-  Otherwise this call will block until one successful read has been made.
+  If `n` is not supplied this call will block until one successful read has
+  been made.
 
 # Core: Hub
 
