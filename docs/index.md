@@ -32,7 +32,7 @@
 
 # require("levee").d
 
-**d** is for data structure like things
+**d** is for data structure thingies
 
 ## buffer
 
