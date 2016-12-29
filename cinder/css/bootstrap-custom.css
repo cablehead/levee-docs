@@ -404,11 +404,13 @@ dt, dd {
     line-height: 1.428571429;
 }
 dt {
-    font-weight: bold;
+    font-weight: 600;
+    margin-bottom: 10px;
 }
 dd {
     margin-left: 0;
-    margin-bottom: 10px;
+		margin-left: 10px;
+    margin-bottom: 15px;
 }
 @media(min-width:768px) {
     .dl-horizontal dt {

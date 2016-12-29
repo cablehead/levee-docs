@@ -53,6 +53,32 @@ local err, data = p.json.decode([[{"foo": "bar"}]])
 print(data.foo)  -- "bar"
 ```
 
+# IO
+
+## R
+
+:read(buf, len)
+: Reads up to `len` bytes into `buf`. Returns `err`, `n` where `n` is the
+  number of bytes actually read
+
+:stream()
+: Returns an [io.Stream](#io)
+
+## W
+
+:write(buf, len)
+: Writes `len` bytes of `buf`. Returns `err`.
+
+## Stream
+
+A stream is a combination of an `io.R` and a `d.Buffer`.
+
+:readin(n)
+: Reads additional bytes into this stream's buffer. `n` is optional. If
+  supplied this call will block until at least `n` bytes are available in the
+  buffer. If that many bytes are already available, it will return immediately.
+  Otherwise this call will block until one successful read has been made.
+
 # Hub
 
 ## Coroutines
@@ -114,29 +140,3 @@ end
 .stream:dial(port, [host])
 : Establishes a streamed network connection with `port` and `host`. `host`
   defaults to `localhost`. Returns `err`, [io.RW](#io)
-
-# IO
-
-## R
-
-:read(buf, len)
-: Reads up to `len` bytes into `buf`. Returns `err`, `n` where `n` is the
-  number of bytes actually read
-
-:stream()
-: Returns an [io.Stream](#io)
-
-## W
-
-:write(buf, len)
-: Writes `len` bytes of `buf`. Returns `err`.
-
-## Stream
-
-A stream is a combination of an `io.R` and a `d.Buffer`.
-
-:readin(n)
-: Reads additional bytes into this stream's buffer. `n` is optional. If
-  supplied this call will block until at least `n` bytes are available in the
-  buffer. If that many bytes are already available, it will return immediately.
-  Otherwise this call will block until one successful read has been made.
