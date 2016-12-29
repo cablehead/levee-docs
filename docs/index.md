@@ -1,6 +1,6 @@
-# \_
+# require("levee").\_
 
-\_ is for utilities
+**\_** is for utilities
 
 ## Network
 
@@ -30,15 +30,15 @@
 :is_dir()
 : Returns `true` if this is a directory.
 
-# d
+# require("levee").d
 
-d is for data structure like things
+**d** is for data structure like things
 
 ## buffer
 
-# p
+# require("levee").p
 
-p is for parsing / protocol jobbies
+**p** is for parsing / protocol jobbies
 
 ## json
 
@@ -53,9 +53,9 @@ local err, data = p.json.decode([[{"foo": "bar"}]])
 print(data.foo)  -- "bar"
 ```
 
-# IO
+# Objects: IO
 
-## R
+## io.R
 
 :read(buf, len)
 : Reads up to `len` bytes into `buf`. Returns `err`, `n` where `n` is the
@@ -64,12 +64,12 @@ print(data.foo)  -- "bar"
 :stream()
 : Returns an [io.Stream](#io)
 
-## W
+## io.W
 
 :write(buf, len)
 : Writes `len` bytes of `buf`. Returns `err`.
 
-## Stream
+## io.Stream
 
 A stream is a combination of an `io.R` and a `d.Buffer`.
 
@@ -79,7 +79,7 @@ A stream is a combination of an `io.R` and a `d.Buffer`.
   buffer. If that many bytes are already available, it will return immediately.
   Otherwise this call will block until one successful read has been made.
 
-# Hub
+# Core: Hub
 
 ## Coroutines
 

@@ -10,7 +10,6 @@ h1[id]:before, h2[id]:before, h3[id]:before, h4[id]:before, h5[id]:before, h6[id
 }
 
 ul.nav li.first-level {
-    font-weight: bold;
 }
 
 ul.nav li.third-level {
