@@ -34,13 +34,13 @@
 
 **d** is for data structure thingies
 
-## buffer
+## d.Buffer
 
 # require("levee").p
 
 **p** is for parsing / protocol jobbies
 
-## json
+## p.json
 
 p.json.decode(buf, len)
 : Decode the JSON compliant string `buf`, `len`. `buf` can be a Lua string.
