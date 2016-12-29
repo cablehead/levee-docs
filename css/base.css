@@ -10,7 +10,6 @@ h1[id]:before, h2[id]:before, h3[id]:before, h4[id]:before, h5[id]:before, h6[id
 }
 
 ul.nav li.first-level {
-    font-weight: bold;
 }
 
 ul.nav li.third-level {
@@ -68,7 +67,7 @@ div.source-links {
 .bs-sidebar .nav > .active > a,
 .bs-sidebar .nav > .active:hover > a,
 .bs-sidebar .nav > .active:focus > a {
-    font-weight: bold;
+	color: #ba2e00;
     background-color: transparent;
     border-right: 1px solid;
 }

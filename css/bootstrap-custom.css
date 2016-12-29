@@ -267,12 +267,6 @@ hr {
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 300;
-    line-height: 1.1;
-    color: inherit;
-}
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
     font-weight: normal;
     line-height: 1;
@@ -404,13 +398,14 @@ dt, dd {
     line-height: 1.428571429;
 }
 dt {
-    font-weight: 600;
+    color: #008cba;
+		font-size: 15px;
     margin-bottom: 10px;
 }
 dd {
     margin-left: 0;
 		margin-left: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 @media(min-width:768px) {
     .dl-horizontal dt {
