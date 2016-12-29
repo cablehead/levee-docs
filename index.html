@@ -191,7 +191,7 @@ print(data.foo)  -- &quot;bar&quot;
 <dd>Reads up to <code>len</code> bytes into <code>buf</code>. Returns <code>err</code>, <code>n</code> where <code>n</code> is the
   number of bytes actually read</dd>
 <dt>:stream()</dt>
-<dd>Returns an <a href="#io">io.Stream</a></dd>
+<dd>Returns an <a href="#iostream">io.Stream</a></dd>
 </dl>
 <h2 id="iow">io.W</h2>
 <dl>
@@ -199,13 +199,14 @@ print(data.foo)  -- &quot;bar&quot;
 <dd>Writes <code>len</code> bytes of <code>buf</code>. Returns <code>err</code>.</dd>
 </dl>
 <h2 id="iostream">io.Stream</h2>
-<p>A stream is a combination of an <code>io.R</code> and a <code>d.Buffer</code>.</p>
+<p>A stream is a combination of an <a href="#ior">io.R</a> and a <a href="#dbuffer">d.Buffer</a>.</p>
 <dl>
 <dt>:readin(n)</dt>
 <dd>Reads additional bytes into this stream's buffer. <code>n</code> is optional. If
-  supplied this call will block until at least <code>n</code> bytes are available in the
+  supplied this call will block until <em>at least</em> <code>n</code> bytes are available in the
   buffer. If that many bytes are already available, it will return immediately.
-  Otherwise this call will block until one successful read has been made.</dd>
+  If <code>n</code> is not supplied this call will block until one successful read has
+  been made.</dd>
 </dl>
 <h1 id="core-hub">Core: Hub</h1>
 <h2 id="coroutines">Coroutines</h2>
@@ -316,5 +317,5 @@ end
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2016-12-29 21:38:47
+Build Date UTC : 2016-12-29 22:26:17
 -->
