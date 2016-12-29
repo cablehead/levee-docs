@@ -2,7 +2,7 @@
     "docs": [
         {
             "location": "/", 
-            "text": "_\n\n\n_ is for utilities\n\n\nNetwork\n\n\n\n\n_.endpoint_in(host, port)\n\n\nReturns \nep\n an IPV4 \nEndpoint\n for the given \nhost\n and \nport\n.\n\n\n_.sendto(no, who, buf, len)\n\n\nSends \nbuf\n, \nlen\n over file descriptor \nno\n to \nEndpoint\n \nwho\n. Returns\n  \nerr\n, \nn\n, where \nn\n is the number of characters sent on success.\n\n\n_.recvfrom(no, buf, len)\n\n\nReceives from file descriptor \nno\n into \nbuf\n, \nlen\n. Returns \nerr\n, \nwho\n,\n  \nn\n where \nwho\n is an \nEndpoint\n object of the sender and \nn\n is\n  the number of bytes received.\n\n\n\n\nFile System\n\n\n\n\n_.stat(path)\n\n\nReturns \nerr\n, \nstatinfo\n for the file pointed to by path where \nstatinfo\n is\n  a \nStat\n object.\n\n\n\n\nStat\n\n\n\n\n:is_reg()\n\n\nReturns \ntrue\n if this is a regular file.\n\n\n:is_dir()\n\n\nReturns \ntrue\n if this is a directory.\n\n\n\n\nd\n\n\nd is for data structure like things\n\n\nbuffer\n\n\np\n\n\np is for parsing / protocol jobbies\n\n\njson\n\n\n\n\np.json.decode(buf, len)\n\n\nDecode the JSON compliant string \nbuf\n, \nlen\n. \nbuf\n can be a Lua string.\n  Returns \nerr\n, \ndata\n.\n\n\n\n\nlocal p = require(\nlevee\n).p\n\nlocal err, data = p.json.decode([[{\nfoo\n: \nbar\n}]])\nprint(data.foo)  -- \nbar\n\n\n\n\n\nHub\n\n\nCoroutines\n\n\n\n\n:sleep(ms)\n\n\nSuspends the current green thread until at least \nms\n milliseconds in the\n  future, when it will be resumed.\n\n\n:spawn(f)\n\n\nSpawns and queues to run the callable \nf\n as a new green thread. The current\n  thread will yield to be resumed after 1 tick of the event loop.\n\n\n:spawn_later(ms, f)\n\n\nSchedules the callable \nf\n to run at least \nms\n milliseconds in the future,\n  in a new green thread.\n\n\n\n\nlocal h = require(\nlevee\n).Hub()\n\nh:spawn(function()\n  while true do\n    print(\ntick\n)\n    h:sleep(1000)\n  end\nend)\n\nh:sleep(500)\n\nwhile true do\n  print(\ntock\n)\n  h:sleep(1000)\nend\n\n\n\n\nIO\n\n\n\n\n.io:stdin()\n\n\nReturns an \nio.R\n object to work with this processes stdin\n\n\n\n\nlocal h = require(\nlevee\n).Hub()\n\nlocal stdin = h.io:stdio()\nlocal stream = stdin:stream()\n\nwhile true do\n  local err, line = stream:line()\n  if err then break end\n  print(line)\nend\n\n\n\n\n\n\n.io:stdout()\n\n\nReturns an \nio.W\n object to work with this processes stdout\n\n\n\n\nNetwork\n\n\n\n\n.stream:dial(port, [host])\n\n\nEstablishes a streamed network connection with \nport\n and \nhost\n. \nhost\n\n  defaults to \nlocalhost\n. Returns \nerr\n, \nio.RW\n\n\n\n\nIO\n\n\nR\n\n\n\n\n:read(buf, len)\n\n\nReads up to \nlen\n bytes into \nbuf\n. Returns \nerr\n, \nn\n where \nn\n is the\n  number of bytes actually read\n\n\n:stream()\n\n\nReturns an \nio.Stream\n\n\n\n\nW\n\n\n\n\n:write(buf, len)\n\n\nWrites \nlen\n bytes of \nbuf\n. Returns \nerr\n.\n\n\n\n\nStream\n\n\nA stream is a combination of an \nio.R\n and a \nd.Buffer\n.\n\n\n\n\n:readin(n)\n\n\nReads additional bytes into this stream's buffer. \nn\n is optional. If\n  supplied this call will block until at least \nn\n bytes are available in the\n  buffer. If that many bytes are already available, it will return immediately.\n  Otherwise this call will block until one successful read has been made.", 
+            "text": "_\n\n\n_ is for utilities\n\n\nNetwork\n\n\n\n\n_.endpoint_in(host, port)\n\n\nReturns \nep\n an IPV4 \nEndpoint\n for the given \nhost\n and \nport\n.\n\n\n_.sendto(no, who, buf, len)\n\n\nSends \nbuf\n, \nlen\n over file descriptor \nno\n to \nEndpoint\n \nwho\n. Returns\n  \nerr\n, \nn\n, where \nn\n is the number of characters sent on success.\n\n\n_.recvfrom(no, buf, len)\n\n\nReceives from file descriptor \nno\n into \nbuf\n, \nlen\n. Returns \nerr\n, \nwho\n,\n  \nn\n where \nwho\n is an \nEndpoint\n object of the sender and \nn\n is\n  the number of bytes received.\n\n\n\n\nFile System\n\n\n\n\n_.stat(path)\n\n\nReturns \nerr\n, \nstatinfo\n for the file pointed to by path where \nstatinfo\n is\n  a \nStat\n object.\n\n\n\n\nStat\n\n\n\n\n:is_reg()\n\n\nReturns \ntrue\n if this is a regular file.\n\n\n:is_dir()\n\n\nReturns \ntrue\n if this is a directory.\n\n\n\n\nd\n\n\nd is for data structure like things\n\n\nbuffer\n\n\np\n\n\np is for parsing / protocol jobbies\n\n\njson\n\n\n\n\np.json.decode(buf, len)\n\n\nDecode the JSON compliant string \nbuf\n, \nlen\n. \nbuf\n can be a Lua string.\n  Returns \nerr\n, \ndata\n.\n\n\n\n\nlocal p = require(\nlevee\n).p\n\nlocal err, data = p.json.decode([[{\nfoo\n: \nbar\n}]])\nprint(data.foo)  -- \nbar\n\n\n\n\n\nIO\n\n\nR\n\n\n\n\n:read(buf, len)\n\n\nReads up to \nlen\n bytes into \nbuf\n. Returns \nerr\n, \nn\n where \nn\n is the\n  number of bytes actually read\n\n\n:stream()\n\n\nReturns an \nio.Stream\n\n\n\n\nW\n\n\n\n\n:write(buf, len)\n\n\nWrites \nlen\n bytes of \nbuf\n. Returns \nerr\n.\n\n\n\n\nStream\n\n\nA stream is a combination of an \nio.R\n and a \nd.Buffer\n.\n\n\n\n\n:readin(n)\n\n\nReads additional bytes into this stream's buffer. \nn\n is optional. If\n  supplied this call will block until at least \nn\n bytes are available in the\n  buffer. If that many bytes are already available, it will return immediately.\n  Otherwise this call will block until one successful read has been made.\n\n\n\n\nHub\n\n\nCoroutines\n\n\n\n\n:sleep(ms)\n\n\nSuspends the current green thread until at least \nms\n milliseconds in the\n  future, when it will be resumed.\n\n\n:spawn(f)\n\n\nSpawns and queues to run the callable \nf\n as a new green thread. The current\n  thread will yield to be resumed after 1 tick of the event loop.\n\n\n:spawn_later(ms, f)\n\n\nSchedules the callable \nf\n to run at least \nms\n milliseconds in the future,\n  in a new green thread.\n\n\n\n\nlocal h = require(\nlevee\n).Hub()\n\nh:spawn(function()\n  while true do\n    print(\ntick\n)\n    h:sleep(1000)\n  end\nend)\n\nh:sleep(500)\n\nwhile true do\n  print(\ntock\n)\n  h:sleep(1000)\nend\n\n\n\n\nIO\n\n\n\n\n.io:stdin()\n\n\nReturns an \nio.R\n object to work with this processes stdin\n\n\n\n\nlocal h = require(\nlevee\n).Hub()\n\nlocal stdin = h.io:stdio()\nlocal stream = stdin:stream()\n\nwhile true do\n  local err, line = stream:line()\n  if err then break end\n  print(line)\nend\n\n\n\n\n\n\n.io:stdout()\n\n\nReturns an \nio.W\n object to work with this processes stdout\n\n\n\n\nNetwork\n\n\n\n\n.stream:dial(port, [host])\n\n\nEstablishes a streamed network connection with \nport\n and \nhost\n. \nhost\n\n  defaults to \nlocalhost\n. Returns \nerr\n, \nio.RW", 
             "title": "Home"
         }, 
         {
@@ -46,27 +46,7 @@
             "title": "json"
         }, 
         {
-            "location": "/#hub", 
-            "text": "", 
-            "title": "Hub"
-        }, 
-        {
-            "location": "/#coroutines", 
-            "text": ":sleep(ms)  Suspends the current green thread until at least  ms  milliseconds in the\n  future, when it will be resumed.  :spawn(f)  Spawns and queues to run the callable  f  as a new green thread. The current\n  thread will yield to be resumed after 1 tick of the event loop.  :spawn_later(ms, f)  Schedules the callable  f  to run at least  ms  milliseconds in the future,\n  in a new green thread.   local h = require( levee ).Hub()\n\nh:spawn(function()\n  while true do\n    print( tick )\n    h:sleep(1000)\n  end\nend)\n\nh:sleep(500)\n\nwhile true do\n  print( tock )\n  h:sleep(1000)\nend", 
-            "title": "Coroutines"
-        }, 
-        {
             "location": "/#io", 
-            "text": ".io:stdin()  Returns an  io.R  object to work with this processes stdin   local h = require( levee ).Hub()\n\nlocal stdin = h.io:stdio()\nlocal stream = stdin:stream()\n\nwhile true do\n  local err, line = stream:line()\n  if err then break end\n  print(line)\nend   .io:stdout()  Returns an  io.W  object to work with this processes stdout", 
-            "title": "IO"
-        }, 
-        {
-            "location": "/#network_1", 
-            "text": ".stream:dial(port, [host])  Establishes a streamed network connection with  port  and  host .  host \n  defaults to  localhost . Returns  err ,  io.RW", 
-            "title": "Network"
-        }, 
-        {
-            "location": "/#io_1", 
             "text": "", 
             "title": "IO"
         }, 
@@ -84,6 +64,26 @@
             "location": "/#stream", 
             "text": "A stream is a combination of an  io.R  and a  d.Buffer .   :readin(n)  Reads additional bytes into this stream's buffer.  n  is optional. If\n  supplied this call will block until at least  n  bytes are available in the\n  buffer. If that many bytes are already available, it will return immediately.\n  Otherwise this call will block until one successful read has been made.", 
             "title": "Stream"
+        }, 
+        {
+            "location": "/#hub", 
+            "text": "", 
+            "title": "Hub"
+        }, 
+        {
+            "location": "/#coroutines", 
+            "text": ":sleep(ms)  Suspends the current green thread until at least  ms  milliseconds in the\n  future, when it will be resumed.  :spawn(f)  Spawns and queues to run the callable  f  as a new green thread. The current\n  thread will yield to be resumed after 1 tick of the event loop.  :spawn_later(ms, f)  Schedules the callable  f  to run at least  ms  milliseconds in the future,\n  in a new green thread.   local h = require( levee ).Hub()\n\nh:spawn(function()\n  while true do\n    print( tick )\n    h:sleep(1000)\n  end\nend)\n\nh:sleep(500)\n\nwhile true do\n  print( tock )\n  h:sleep(1000)\nend", 
+            "title": "Coroutines"
+        }, 
+        {
+            "location": "/#io_1", 
+            "text": ".io:stdin()  Returns an  io.R  object to work with this processes stdin   local h = require( levee ).Hub()\n\nlocal stdin = h.io:stdio()\nlocal stream = stdin:stream()\n\nwhile true do\n  local err, line = stream:line()\n  if err then break end\n  print(line)\nend   .io:stdout()  Returns an  io.W  object to work with this processes stdout", 
+            "title": "IO"
+        }, 
+        {
+            "location": "/#network_1", 
+            "text": ".stream:dial(port, [host])  Establishes a streamed network connection with  port  and  host .  host \n  defaults to  localhost . Returns  err ,  io.RW", 
+            "title": "Network"
         }
     ]
 }

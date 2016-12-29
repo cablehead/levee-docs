@@ -112,19 +112,7 @@
             
         
     
-        <li class="first-level "><a href="#hub">Hub</a></li>
-        
-            <li class="second-level"><a href="#coroutines">Coroutines</a></li>
-            
-        
-            <li class="second-level"><a href="#io">IO</a></li>
-            
-        
-            <li class="second-level"><a href="#network_1">Network</a></li>
-            
-        
-    
-        <li class="first-level "><a href="#io_1">IO</a></li>
+        <li class="first-level "><a href="#io">IO</a></li>
         
             <li class="second-level"><a href="#r">R</a></li>
             
@@ -133,6 +121,18 @@
             
         
             <li class="second-level"><a href="#stream">Stream</a></li>
+            
+        
+    
+        <li class="first-level "><a href="#hub">Hub</a></li>
+        
+            <li class="second-level"><a href="#coroutines">Coroutines</a></li>
+            
+        
+            <li class="second-level"><a href="#io_1">IO</a></li>
+            
+        
+            <li class="second-level"><a href="#network_1">Network</a></li>
             
         
     
@@ -184,6 +184,29 @@ local err, data = p.json.decode([[{&quot;foo&quot;: &quot;bar&quot;}]])
 print(data.foo)  -- &quot;bar&quot;
 </code></pre>
 
+<h1 id="io">IO</h1>
+<h2 id="r">R</h2>
+<dl>
+<dt>:read(buf, len)</dt>
+<dd>Reads up to <code>len</code> bytes into <code>buf</code>. Returns <code>err</code>, <code>n</code> where <code>n</code> is the
+  number of bytes actually read</dd>
+<dt>:stream()</dt>
+<dd>Returns an <a href="#io">io.Stream</a></dd>
+</dl>
+<h2 id="w">W</h2>
+<dl>
+<dt>:write(buf, len)</dt>
+<dd>Writes <code>len</code> bytes of <code>buf</code>. Returns <code>err</code>.</dd>
+</dl>
+<h2 id="stream">Stream</h2>
+<p>A stream is a combination of an <code>io.R</code> and a <code>d.Buffer</code>.</p>
+<dl>
+<dt>:readin(n)</dt>
+<dd>Reads additional bytes into this stream's buffer. <code>n</code> is optional. If
+  supplied this call will block until at least <code>n</code> bytes are available in the
+  buffer. If that many bytes are already available, it will return immediately.
+  Otherwise this call will block until one successful read has been made.</dd>
+</dl>
 <h1 id="hub">Hub</h1>
 <h2 id="coroutines">Coroutines</h2>
 <dl>
@@ -214,7 +237,7 @@ while true do
 end
 </code></pre>
 
-<h2 id="io">IO</h2>
+<h2 id="io_1">IO</h2>
 <dl>
 <dt>.io:stdin()</dt>
 <dd>Returns an <a href="#r">io.R</a> object to work with this processes stdin</dd>
@@ -240,29 +263,6 @@ end
 <dt>.stream:dial(port, [host])</dt>
 <dd>Establishes a streamed network connection with <code>port</code> and <code>host</code>. <code>host</code>
   defaults to <code>localhost</code>. Returns <code>err</code>, <a href="#io">io.RW</a></dd>
-</dl>
-<h1 id="io_1">IO</h1>
-<h2 id="r">R</h2>
-<dl>
-<dt>:read(buf, len)</dt>
-<dd>Reads up to <code>len</code> bytes into <code>buf</code>. Returns <code>err</code>, <code>n</code> where <code>n</code> is the
-  number of bytes actually read</dd>
-<dt>:stream()</dt>
-<dd>Returns an <a href="#io">io.Stream</a></dd>
-</dl>
-<h2 id="w">W</h2>
-<dl>
-<dt>:write(buf, len)</dt>
-<dd>Writes <code>len</code> bytes of <code>buf</code>. Returns <code>err</code>.</dd>
-</dl>
-<h2 id="stream">Stream</h2>
-<p>A stream is a combination of an <code>io.R</code> and a <code>d.Buffer</code>.</p>
-<dl>
-<dt>:readin(n)</dt>
-<dd>Reads additional bytes into this stream's buffer. <code>n</code> is optional. If
-  supplied this call will block until at least <code>n</code> bytes are available in the
-  buffer. If that many bytes are already available, it will return immediately.
-  Otherwise this call will block until one successful read has been made.</dd>
 </dl></div>
         
     </div>
@@ -315,6 +315,6 @@ end
 </html>
 
 <!--
-MkDocs version : 0.15.3
-Build Date UTC : 2016-12-03 03:26:45.829158
+MkDocs version : 0.16.1
+Build Date UTC : 2016-12-29 03:07:39
 -->
