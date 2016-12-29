@@ -24,10 +24,10 @@
 
 ## Stat
 
-:is_reg()
+stat:is_reg()
 : Returns `true` if this is a regular file.
 
-:is_dir()
+stat:is_dir()
 : Returns `true` if this is a directory.
 
 # require("levee").d
@@ -57,23 +57,23 @@ print(data.foo)  -- "bar"
 
 ## io.R
 
-:read(buf, len)
+r:read(buf, len)
 : Reads up to `len` bytes into `buf`. Returns `err`, `n` where `n` is the
   number of bytes actually read
 
-:stream()
+r:stream()
 : Returns an [io.Stream](#iostream)
 
 ## io.W
 
-:write(buf, len)
+w:write(buf, len)
 : Writes `len` bytes of `buf`. Returns `err`.
 
 ## io.Stream
 
 A stream is a combination of an [io.R](#ior) and a [d.Buffer](#dbuffer).
 
-:readin(n)
+stream:readin(n)
 : Reads additional bytes into this stream's buffer. `n` is optional. If
   supplied this call will block until *at least* `n` bytes are available in the
   buffer. If that many bytes are already available, it will return immediately.
@@ -84,15 +84,15 @@ A stream is a combination of an [io.R](#ior) and a [d.Buffer](#dbuffer).
 
 ## Coroutines
 
-:sleep(ms)
+h:sleep(ms)
 : Suspends the current green thread until at least `ms` milliseconds in the
   future, when it will be resumed.
 
-:spawn(f)
+h:spawn(f)
 : Spawns and queues to run the callable `f` as a new green thread. The current
   thread will yield to be resumed after 1 tick of the event loop.
 
-:spawn_later(ms, f)
+h:spawn_later(ms, f)
 : Schedules the callable `f` to run at least `ms` milliseconds in the future,
   in a new green thread.
 
@@ -116,7 +116,7 @@ end
 
 ## IO
 
-.io:stdin()
+h.io:stdin()
 : Returns an [io.R](#r) object to work with this processes stdin
 
 ```lua
@@ -132,12 +132,12 @@ while true do
 end
 ```
 
-.io:stdout()
+h.io:stdout()
 : Returns an [io.W](#w) object to work with this processes stdout
 
 
 ## Network
 
-.stream:dial(port, [host])
+h.stream:dial(port, [host])
 : Establishes a streamed network connection with `port` and `host`. `host`
   defaults to `localhost`. Returns `err`, [io.RW](#io)
