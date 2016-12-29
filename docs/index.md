@@ -117,7 +117,7 @@ end
 ## IO
 
 h.io:stdin()
-: Returns an [io.R](#r) object to work with this processes stdin
+: Returns an [io.R](#ior) object to work with this processes stdin
 
 ```lua
 local h = require("levee").Hub()
@@ -140,4 +140,4 @@ h.io:stdout()
 
 h.stream:dial(port, [host])
 : Establishes a streamed network connection with `port` and `host`. `host`
-  defaults to `localhost`. Returns `err`, [io.RW](#io)
+  defaults to `localhost`. Returns `err`, [io.RW](#ior)
