@@ -244,7 +244,7 @@ data.foo  -- &quot;bar&quot;
 <h2 id="iostream">io.Stream</h2>
 <p>A stream is a combination of an <a href="#ior">io.R</a> and a <a href="#dbuffer">d.Buffer</a>.</p>
 <dl>
-<dt>stream:readin(n)</dt>
+<dt>stream:readin([n])</dt>
 <dd>Reads additional bytes into this stream's buffer. <code>n</code> is optional. If
   supplied this call will block until <em>at least</em> <code>n</code> bytes are available in the
   buffer. If that many bytes are already available, it will return immediately.
@@ -360,5 +360,5 @@ end
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2016-12-30 00:08:21
+Build Date UTC : 2016-12-30 00:18:09
 -->
