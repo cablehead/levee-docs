@@ -36,6 +36,38 @@ stat:is_dir()
 
 ## d.Buffer
 
+A `Buffer` is designed to be a reusable scratch pad of memory. It can grow
+dynamically if it's initial sizing is too small, but eventually you usually
+want the size of the buffer to reach a steady state. It's the work horse data
+structure of the Levee library. It is used, for example, to create streaming
+protocol parsers. The parser reads bytes into the `Buffer` until the next token
+in the protocol is reached and the parser can then yield the next portion of
+the protocol and then `:trim` the `Buffer` to reset the memory allocation for
+reuse.
+
+d.Buffer([bytes])
+: allocates and returns a new `buf`. `bytes` is a sizing hint for the initial
+  allocation of memory for this `Buffer`
+
+buf:ensure([bytes])
+: ensures the `Buffer` has *at least* `bytes` available of allocated space, in
+  addition to what's currently in use.
+
+buf:value()
+: returns `char*`, `len` of the current contents of the `Buffer`
+
+buf:tail()
+: returns `char*`, `len` to the tail of the allocated `Buffer` that's not
+  currently in use.
+
+buf:bumps([len])
+: moves the marker for in use bytes by `len`
+
+buf:trim([len])
+: marks `len` bytes of the `Buffer` as available for reuse. If `len` is not
+  supplied to entire `Buffer` is marked. Returns `n`, the number of bytes
+  trimmed.
+
 # require("levee").p
 
 **p** is for parsing / protocol jobbies
