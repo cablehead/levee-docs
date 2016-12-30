@@ -68,6 +68,19 @@ buf:trim([len])
   supplied to entire `Buffer` is marked. Returns `n`, the number of bytes
   trimmed.
 
+```lua
+local buf = d.Buffer()
+
+buf:ensure(3)
+
+ffi.copy(buf:tail(), "foo")
+buf:bump(3)
+ffi.string(buf:value())  -- "foo"
+
+buf:trim()
+ffi.string(buf:value())  -- ""
+```
+
 # require("levee").p
 
 **p** is for parsing / protocol jobbies
@@ -82,7 +95,7 @@ p.json.decode(buf, len)
 local p = require("levee").p
 
 local err, data = p.json.decode([[{"foo": "bar"}]])
-print(data.foo)  -- "bar"
+data.foo  -- "bar"
 ```
 
 # Objects: IO
