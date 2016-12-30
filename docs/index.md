@@ -60,7 +60,7 @@ buf:tail()
 : returns `char*`, `len` to the tail of the allocated `Buffer` that's not
   currently in use.
 
-buf:bumps([len])
+buf:bump([len])
 : moves the marker for in use bytes by `len`
 
 buf:trim([len])
