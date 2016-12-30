@@ -123,7 +123,7 @@ w:write(buf, len)
 
 A stream is a combination of an [io.R](#ior) and a [d.Buffer](#dbuffer).
 
-stream:readin(n)
+stream:readin([n])
 : Reads additional bytes into this stream's buffer. `n` is optional. If
   supplied this call will block until *at least* `n` bytes are available in the
   buffer. If that many bytes are already available, it will return immediately.
