@@ -188,6 +188,109 @@ h.io:stdout()
 
 ## Network
 
-h.stream:dial(port, [host])
-: Establishes a streamed network connection with `port` and `host`. `host`
-  defaults to `localhost`. Returns `err`, [io.RW](#ior)
+h.stream:dial(endpoint|options)
+: Establishes a streamed network connection based on the supplied `endpoint`
+  string or `options` (`endpoint` TBD). Returns `err`, [io.RW](#ior)
+
+Options are:
+
+- `local`: path to unix domain socket (TBD) *OR*
+
+- `port`: port to connect to (default: 0)
+
+- `host`: host to connect to (default: localhost)
+
+- `timeout`: timeout for reads and writes on this connection
+
+- `connect_timeout`: timeout to apply to connection
+
+- `tls`: upgrade this connection to use tls. Note `timeout` also applies to the
+  tls handshake. The value is a table of [TLS Options](#misc-tls-options).
+
+h.stream:listen(endpoint|options)
+: Binds to `endpoint` string or as specified with `options` and listens for
+  streamed connections. Returns `err`, [Recver](#TDB). The Recver yields `err`,
+  [io.RW](#ior) for each accepted connection.
+
+Options are:
+
+- `local`: path to unix domain socket (TBD) *OR*
+
+- `port`: port to bind to (default: 0)
+
+- `host`: host to bind to (default: localhost)
+
+- `backlog`: the maximum length for the queue of pending connections (default:
+  256)
+
+- `timeout`: sets the read / write timeout for accepted connections
+
+- `tls`: upgrade accepted connections to use tls. Note `timeout` also
+  applies to the tls handshake. The value is a table of [TLS
+  Options](#misc-tls-options).
+
+```lua
+local h = require("levee").Hub()
+
+-- a basic echo server
+local err, serve = h.stream:listen({port=9000})
+
+while true do
+    local err, conn = serve:recv()
+    if err then break end
+    h:spawn(function()
+        local buf = levee.d.Buffer(4096)
+        conn:readinto(buf:tail())
+        conn:write(buf:value())
+        conn:close()
+    end)
+end
+```
+
+# Misc: TLS Options
+
+```
+  Certificate Authority:
+    ca = BYTES            # root certificates from string
+    ca_path = DIRECTORY   # directory searched for root certificates
+    ca_file = FILE        # file containing the root certificates
+  Certificate:
+    cert = BYTES          # public certificate from string
+    cert_file = FILE      # file containing the public certificate
+  Key:
+    key = BYTES           # private key from string
+    key_file = FILE       # file containing the private key
+  Ciphers:
+    ciphers = "secure"    # use the secure ciphers only (default)
+    ciphers = "compat"    # OpenSSL compatibility
+    ciphers = "legacy"    # (not documented)
+    ciphers = "insecure"  # all ciphers available
+    ciphers = "all"       # same as "insecure"
+    ciphers = STRING      # see CIPHERS section of openssl(1)
+  DHE Params:
+    dheparams = STRING    # (not documented)
+  ECDHE Curve:
+    ecdhecurve = STRING   # (not documented)
+  Protocols:
+    protocols = "TLSv1.0" # only TLSv1.0
+    protocols = "TLSv1.1" # only TLSv1.1
+    protocols = "TLSv1.2" # only TLSv1.2
+    protocols = "ALL"     # all supported protocols
+    protocols = "DEFAULT" # currently TLSv1.2
+    protocols = LIST      # any combination of the above strings
+  Verfiy Depth:
+    verify_depth = NUMBER # limit verification depth (?)
+  Server:
+    server = {
+      prefer_ciphers = "server"  # prefer client cipher list (less secure)
+      prefer_ciphers = "client"  # prefer server cipher list (more secure, default)
+      verify_client = true       # require client to send certificate
+      verify_client = "optional" # enable client to send certificate
+    }
+  Insecure:
+    insecure = {
+      verify_cert = false        # disable certificate verification
+      verify_name = false        # disable server name verification for client
+      verify_time = false        # disable validity checking of certificates
+    }
+```
