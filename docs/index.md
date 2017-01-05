@@ -60,7 +60,7 @@ buf:tail()
 : returns `char*`, `len` to the tail of the allocated `Buffer` that's not
   currently in use.
 
-buf:bump([len])
+buf:bump(len)
 : moves the marker for in use bytes by `len`
 
 buf:trim([len])
@@ -102,14 +102,19 @@ data.foo  -- "bar"
 
 ## io.R
 
-r:read(buf, len)
-: Reads up to `len` bytes into `buf`. Returns `err`, `n` where `n` is the
+r:read(char*, len)
+: Reads up to `len` bytes into `char*`. Returns `err`, `n` where `n` is the
   number of bytes actually read
 
-r:readn(buf, n, [len])
-: Reads *at least* `n` bytes into `buf`, but *no more* then `len`. `len`
+r:readn(char*, n, [len])
+: Reads *at least* `n` bytes into `char*`, but *no more* then `len`. `len`
   defaults to `n`. Returns `err`, `n` where `n` is the number of bytes actually
   read
+
+r:readinto(buf, n)
+: Reads *at least* `n` bytes into [buf](#dbuffer). Handles ensuring the `buf`
+  is large enough to accommodate `n` and bumps the contents marker. Returns
+  `err`.
 
 r:stream()
 : Returns an [io.Stream](#iostream)
