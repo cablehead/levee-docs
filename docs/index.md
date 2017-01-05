@@ -196,7 +196,7 @@ Options are:
 
 - `local`: path to unix domain socket (TBD) *OR*
 
-- `port`: port to connect to (default: 0)
+- `port`: port to connect to
 
 - `host`: host to connect to (default: localhost)
 
