@@ -193,7 +193,7 @@ reuse.</p>
 <dt>buf:tail()</dt>
 <dd>returns <code>char*</code>, <code>len</code> to the tail of the allocated <code>Buffer</code> that's not
   currently in use.</dd>
-<dt>buf:bump([len])</dt>
+<dt>buf:bump(len)</dt>
 <dd>moves the marker for in use bytes by <code>len</code></dd>
 <dt>buf:trim([len])</dt>
 <dd>marks <code>len</code> bytes of the <code>Buffer</code> as available for reuse. If <code>len</code> is not
@@ -229,13 +229,17 @@ data.foo  -- &quot;bar&quot;
 <h1 id="objects-io">Objects: IO</h1>
 <h2 id="ior">io.R</h2>
 <dl>
-<dt>r:read(buf, len)</dt>
-<dd>Reads up to <code>len</code> bytes into <code>buf</code>. Returns <code>err</code>, <code>n</code> where <code>n</code> is the
+<dt>r:read(char*, len)</dt>
+<dd>Reads up to <code>len</code> bytes into <code>char*</code>. Returns <code>err</code>, <code>n</code> where <code>n</code> is the
   number of bytes actually read</dd>
-<dt>r:readn(buf, n, [len])</dt>
-<dd>Reads <em>at least</em> <code>n</code> bytes into <code>buf</code>, but <em>no more</em> then <code>len</code>. <code>len</code>
+<dt>r:readn(char*, n, [len])</dt>
+<dd>Reads <em>at least</em> <code>n</code> bytes into <code>char*</code>, but <em>no more</em> then <code>len</code>. <code>len</code>
   defaults to <code>n</code>. Returns <code>err</code>, <code>n</code> where <code>n</code> is the number of bytes actually
   read</dd>
+<dt>r:readinto(buf, n)</dt>
+<dd>Reads <em>at least</em> <code>n</code> bytes into <a href="#dbuffer">buf</a>. Handles ensuring the <code>buf</code>
+  is large enough to accommodate <code>n</code> and bumps the contents marker. Returns
+  <code>err</code>.</dd>
 <dt>r:stream()</dt>
 <dd>Returns an <a href="#iostream">io.Stream</a></dd>
 </dl>
@@ -477,5 +481,5 @@ end
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-01-05 00:38:04
+Build Date UTC : 2017-01-05 00:46:07
 -->
