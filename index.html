@@ -136,6 +136,9 @@
             
         
     
+        <li class="first-level "><a href="#misc-tls-options">Misc: TLS Options</a></li>
+        
+    
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
@@ -304,10 +307,124 @@ end
 </dl>
 <h2 id="network_1">Network</h2>
 <dl>
-<dt>h.stream:dial(port, [host])</dt>
-<dd>Establishes a streamed network connection with <code>port</code> and <code>host</code>. <code>host</code>
-  defaults to <code>localhost</code>. Returns <code>err</code>, <a href="#ior">io.RW</a></dd>
-</dl></div>
+<dt>h.stream:dial(endpoint|options)</dt>
+<dd>Establishes a streamed network connection based on the supplied <code>endpoint</code>
+  string or <code>options</code> (<code>endpoint</code> TBD). Returns <code>err</code>, <a href="#ior">io.RW</a></dd>
+</dl>
+<p>Options are:</p>
+<ul>
+<li>
+<p><code>local</code>: path to unix domain socket (TBD) <em>OR</em></p>
+</li>
+<li>
+<p><code>port</code>: port to connect to (default: 0)</p>
+</li>
+<li>
+<p><code>host</code>: host to connect to (default: localhost)</p>
+</li>
+<li>
+<p><code>timeout</code>: timeout for reads and writes on this connection</p>
+</li>
+<li>
+<p><code>connect_timeout</code>: timeout to apply to connection</p>
+</li>
+<li>
+<p><code>tls</code>: upgrade this connection to use tls. Note <code>timeout</code> also applies to the
+  tls handshake. The value is a table of <a href="#misc-tls-options">TLS Options</a>.</p>
+</li>
+</ul>
+<dl>
+<dt>h.stream:listen(endpoint|options)</dt>
+<dd>Binds to <code>endpoint</code> string or as specified with <code>options</code> and listens for
+  streamed connections. Returns <code>err</code>, <a href="#TDB">Recver</a>. The Recver yields <code>err</code>,
+  <a href="#ior">io.RW</a> for each accepted connection.</dd>
+</dl>
+<p>Options are:</p>
+<ul>
+<li>
+<p><code>local</code>: path to unix domain socket (TBD) <em>OR</em></p>
+</li>
+<li>
+<p><code>port</code>: port to bind to (default: 0)</p>
+</li>
+<li>
+<p><code>host</code>: host to bind to (default: localhost)</p>
+</li>
+<li>
+<p><code>backlog</code>: the maximum length for the queue of pending connections (default:
+  256)</p>
+</li>
+<li>
+<p><code>timeout</code>: sets the read / write timeout for accepted connections</p>
+</li>
+<li>
+<p><code>tls</code>: upgrade accepted connections to use tls. Note <code>timeout</code> also
+  applies to the tls handshake. The value is a table of <a href="#misc-tls-options">TLS
+  Options</a>.</p>
+</li>
+</ul>
+<pre><code class="lua">local h = require(&quot;levee&quot;).Hub()
+
+-- a basic echo server
+local err, serve = h.stream:listen({port=9000})
+
+while true do
+    local err, conn = serve:recv()
+    if err then break end
+    h:spawn(function()
+        local buf = levee.d.Buffer(4096)
+        conn:readinto(buf:tail())
+        conn:write(buf:value())
+        conn:close()
+    end)
+end
+</code></pre>
+
+<h1 id="misc-tls-options">Misc: TLS Options</h1>
+<pre><code>  Certificate Authority:
+    ca = BYTES            # root certificates from string
+    ca_path = DIRECTORY   # directory searched for root certificates
+    ca_file = FILE        # file containing the root certificates
+  Certificate:
+    cert = BYTES          # public certificate from string
+    cert_file = FILE      # file containing the public certificate
+  Key:
+    key = BYTES           # private key from string
+    key_file = FILE       # file containing the private key
+  Ciphers:
+    ciphers = &quot;secure&quot;    # use the secure ciphers only (default)
+    ciphers = &quot;compat&quot;    # OpenSSL compatibility
+    ciphers = &quot;legacy&quot;    # (not documented)
+    ciphers = &quot;insecure&quot;  # all ciphers available
+    ciphers = &quot;all&quot;       # same as &quot;insecure&quot;
+    ciphers = STRING      # see CIPHERS section of openssl(1)
+  DHE Params:
+    dheparams = STRING    # (not documented)
+  ECDHE Curve:
+    ecdhecurve = STRING   # (not documented)
+  Protocols:
+    protocols = &quot;TLSv1.0&quot; # only TLSv1.0
+    protocols = &quot;TLSv1.1&quot; # only TLSv1.1
+    protocols = &quot;TLSv1.2&quot; # only TLSv1.2
+    protocols = &quot;ALL&quot;     # all supported protocols
+    protocols = &quot;DEFAULT&quot; # currently TLSv1.2
+    protocols = LIST      # any combination of the above strings
+  Verfiy Depth:
+    verify_depth = NUMBER # limit verification depth (?)
+  Server:
+    server = {
+      prefer_ciphers = &quot;server&quot;  # prefer client cipher list (less secure)
+      prefer_ciphers = &quot;client&quot;  # prefer server cipher list (more secure, default)
+      verify_client = true       # require client to send certificate
+      verify_client = &quot;optional&quot; # enable client to send certificate
+    }
+  Insecure:
+    insecure = {
+      verify_cert = false        # disable certificate verification
+      verify_name = false        # disable server name verification for client
+      verify_time = false        # disable validity checking of certificates
+    }
+</code></pre></div>
         
     </div>
 
@@ -360,5 +477,5 @@ end
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2016-12-30 00:31:48
+Build Date UTC : 2017-01-05 00:10:38
 -->
