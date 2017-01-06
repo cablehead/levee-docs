@@ -1,160 +1,3 @@
-# require("levee").\_
-
-**\_** is for utilities
-
-## Network
-
-\_.endpoint_in(host, port)
-: Returns `ep` an IPV4 [Endpoint](#endpoint) for the given `host` and `port`.
-
-\_.sendto(no, who, buf, len)
-: Sends `buf`, `len` over file descriptor `no` to [Endpoint](#endpoint) `who`. Returns
-  `err`, `n`, where `n` is the number of characters sent on success.
-
-\_.recvfrom(no, buf, len)
-: Receives from file descriptor `no` into `buf`, `len`. Returns `err`, `who`,
-  `n` where `who` is an [Endpoint](#endpoint) object of the sender and `n` is
-  the number of bytes received.
-
-## File System
-
-\_.stat(path)
-: Returns `err`, `statinfo` for the file pointed to by path where `statinfo` is
-  a [Stat](#stat) object.
-
-## Stat
-
-stat:is_reg()
-: Returns `true` if this is a regular file.
-
-stat:is_dir()
-: Returns `true` if this is a directory.
-
-# require("levee").d
-
-**d** is for data structure thingies
-
-## d.Buffer
-
-A `Buffer` is designed to be a reusable scratch pad of memory. It can grow
-dynamically if it's initial sizing is too small, but eventually you usually
-want the size of the buffer to reach a steady state. It's the work horse data
-structure of the Levee library. It is used, for example, to create streaming
-protocol parsers. The parser reads bytes into the `Buffer` until the next token
-in the protocol is reached and the parser can then yield the next portion of
-the protocol and then `:trim` the `Buffer` to reset the memory allocation for
-reuse.
-
-d.Buffer([bytes])
-: allocates and returns a new `buf`. `bytes` is a sizing hint for the initial
-  allocation of memory for this `Buffer`
-
-buf:ensure([bytes])
-: ensures the `Buffer` has *at least* `bytes` available of allocated space, in
-  addition to what's currently in use.
-
-buf:write(buf, [len])
-: copies `buf` into the tail of the `Buffer`. `buf` can either be a `char *` or a
-  `string`. `len` defaults to `#buf`. Write ensures the buffer is large enough to
-  hold the write and bumps the `Buffer`'s content marker
-
-buf:value([[off], len])
-: If `len` is supplied it should be less than the current length of the
-  `Buffer`. `len` defaults to the entire `Buffer`'s contents. The optional
-  `off` offsets the returned `char *` from the beginning of the `Buffer`'s
-  contents.  Returns `char*`, `len`
-
-buf:tail()
-: returns `char*`, `len` to the tail of the allocated `Buffer` that's not
-  currently in use
-
-buf:bump(len)
-: moves the marker for in use bytes by `len`
-
-buf:trim([len])
-: marks `len` bytes of the `Buffer` as available for reuse. If `len` is not
-  supplied to entire `Buffer` is marked. Returns `n`, the number of bytes
-  trimmed
-
-```lua
-local buf = d.Buffer()
-
-buf:ensure(3)
-ffi.copy(buf:tail(), "foo")
-buf:bump(3)
-ffi.string(buf:value())  -- "foo"
-
-buf:write("bar")
-ffi.string(buf:value())  -- "foobar"
-
-ffi.string(buf:value(3))  -- "foo"
-ffi.string(buf:value(3, 1))  -- "b"
-
-buf:trim()
-ffi.string(buf:value())  -- ""
-```
-
-## d.Iovec
-
-d.Iovec([size])
-: *todo*
-
-
-# require("levee").p
-
-**p** is for parsing / protocol jobbies
-
-## p.json
-
-p.json.decode(buf, len)
-: Decode the JSON compliant string `buf`, `len`. `buf` can be a Lua string.
-  Returns `err`, `data`.
-
-```lua
-local p = require("levee").p
-
-local err, data = p.json.decode([[{"foo": "bar"}]])
-data.foo  -- "bar"
-```
-
-# Objects: IO
-
-## io.R
-
-r:read(char*, len)
-: Reads up to `len` bytes into `char*`. Returns `err`, `n` where `n` is the
-  number of bytes actually read
-
-r:readn(char*, n, [len])
-: Reads *at least* `n` bytes into `char*`, but *no more* then `len`. `len`
-  defaults to `n`. Returns `err`, `n` where `n` is the number of bytes actually
-  read
-
-r:readinto(buf, n)
-: Reads *at least* `n` bytes into [buf](#dbuffer). Handles ensuring the `buf`
-  is large enough to accommodate `n` and bumps the contents marker. Returns
-  `err`.
-
-r:stream()
-: Returns an [io.Stream](#iostream)
-
-## io.W
-
-w:write(buf, [len])
-: Writes `buf`. `buf` can either be a `char *` or a `string`. `len` defaults to
-  `#buf`.  Returns `err`.
-
-## io.Stream
-
-A stream is a combination of an [io.R](#ior) and a [d.Buffer](#dbuffer).
-
-stream:readin([n])
-: Reads additional bytes into this stream's buffer. `n` is optional. If
-  supplied this call will block until *at least* `n` bytes are available in the
-  buffer. If that many bytes are already available, it will return immediately.
-  If `n` is not supplied this call will block until one successful read has
-  been made.
-
 # Core: Hub
 
 ## Coroutines
@@ -272,6 +115,45 @@ while true do
 end
 ```
 
+# Objects: IO
+
+## io.R
+
+r:read(char*, len)
+: Reads up to `len` bytes into `char*`. Returns `err`, `n` where `n` is the
+  number of bytes actually read
+
+r:readn(char*, n, [len])
+: Reads *at least* `n` bytes into `char*`, but *no more* then `len`. `len`
+  defaults to `n`. Returns `err`, `n` where `n` is the number of bytes actually
+  read
+
+r:readinto(buf, n)
+: Reads *at least* `n` bytes into [buf](#dbuffer). Handles ensuring the `buf`
+  is large enough to accommodate `n` and bumps the contents marker. Returns
+  `err`.
+
+r:stream()
+: Returns an [io.Stream](#iostream)
+
+## io.W
+
+w:write(buf, [len])
+: Writes `buf`. `buf` can either be a `char *` or a `string`. `len` defaults to
+  `#buf`.  Returns `err`.
+
+## io.Stream
+
+A stream is a combination of an [io.R](#ior) and a [d.Buffer](#dbuffer).
+
+stream:readin([n])
+: Reads additional bytes into this stream's buffer. `n` is optional. If
+  supplied this call will block until *at least* `n` bytes are available in the
+  buffer. If that many bytes are already available, it will return immediately.
+  If `n` is not supplied this call will block until one successful read has
+  been made.
+
+
 # Misc: TLS Options
 
 ```
@@ -318,4 +200,123 @@ end
       verify_name = false        # disable server name verification for client
       verify_time = false        # disable validity checking of certificates
     }
+```
+
+# require("levee").\_
+
+**\_** is for utilities
+
+## Network
+
+\_.endpoint_in(host, port)
+: Returns `ep` an IPV4 [Endpoint](#endpoint) for the given `host` and `port`.
+
+\_.sendto(no, who, buf, len)
+: Sends `buf`, `len` over file descriptor `no` to [Endpoint](#endpoint) `who`. Returns
+  `err`, `n`, where `n` is the number of characters sent on success.
+
+\_.recvfrom(no, buf, len)
+: Receives from file descriptor `no` into `buf`, `len`. Returns `err`, `who`,
+  `n` where `who` is an [Endpoint](#endpoint) object of the sender and `n` is
+  the number of bytes received.
+
+## File System
+
+\_.stat(path)
+: Returns `err`, `statinfo` for the file pointed to by path where `statinfo` is
+  a [Stat](#stat) object.
+
+## Stat
+
+stat:is_reg()
+: Returns `true` if this is a regular file.
+
+stat:is_dir()
+: Returns `true` if this is a directory.
+
+# require("levee").d
+
+**d** is for data structure thingies
+
+## d.Buffer
+
+A `Buffer` is designed to be a reusable scratch pad of memory. It can grow
+dynamically if it's initial sizing is too small, but eventually you usually
+want the size of the buffer to reach a steady state. It's the work horse data
+structure of the Levee library. It is used, for example, to create streaming
+protocol parsers. The parser reads bytes into the `Buffer` until the next token
+in the protocol is reached and the parser can then yield the next portion of
+the protocol and then `:trim` the `Buffer` to reset the memory allocation for
+reuse.
+
+d.Buffer([bytes])
+: allocates and returns a new `buf`. `bytes` is a sizing hint for the initial
+  allocation of memory for this `Buffer`
+
+buf:ensure([bytes])
+: ensures the `Buffer` has *at least* `bytes` available of allocated space, in
+  addition to what's currently in use.
+
+buf:write(buf, [len])
+: copies `buf` into the tail of the `Buffer`. `buf` can either be a `char *` or a
+  `string`. `len` defaults to `#buf`. Write ensures the buffer is large enough to
+  hold the write and bumps the `Buffer`'s content marker
+
+buf:value([[off], len])
+: If `len` is supplied it should be less than the current length of the
+  `Buffer`. `len` defaults to the entire `Buffer`'s contents. The optional
+  `off` offsets the returned `char *` from the beginning of the `Buffer`'s
+  contents.  Returns `char*`, `len`
+
+buf:tail()
+: returns `char*`, `len` to the tail of the allocated `Buffer` that's not
+  currently in use
+
+buf:bump(len)
+: moves the marker for in use bytes by `len`
+
+buf:trim([len])
+: marks `len` bytes of the `Buffer` as available for reuse. If `len` is not
+  supplied to entire `Buffer` is marked. Returns `n`, the number of bytes
+  trimmed
+
+```lua
+local buf = d.Buffer()
+
+buf:ensure(3)
+ffi.copy(buf:tail(), "foo")
+buf:bump(3)
+ffi.string(buf:value())  -- "foo"
+
+buf:write("bar")
+ffi.string(buf:value())  -- "foobar"
+
+ffi.string(buf:value(3))  -- "foo"
+ffi.string(buf:value(3, 1))  -- "b"
+
+buf:trim()
+ffi.string(buf:value())  -- ""
+```
+
+## d.Iovec
+
+d.Iovec([size])
+: *todo*
+
+
+# require("levee").p
+
+**p** is for parsing / protocol jobbies
+
+## p.json
+
+p.json.decode(buf, len)
+: Decode the JSON compliant string `buf`, `len`. `buf` can be a Lua string.
+  Returns `err`, `data`.
+
+```lua
+local p = require("levee").p
+
+local err, data = p.json.decode([[{"foo": "bar"}]])
+data.foo  -- "bar"
 ```
