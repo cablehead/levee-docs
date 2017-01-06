@@ -56,16 +56,17 @@ buf:ensure([bytes])
 buf:write(buf, [len])
 : copies `buf` into the tail of the `Buffer`. `buf` can either be a `char *` or a
   `string`. `len` defaults to `#buf`. Write ensures the buffer is large enough to
-  hold the write and bumps the `Buffer`'s content marker.
+  hold the write and bumps the `Buffer`'s content marker
 
-buf:value([len])
+buf:value([[off], len])
 : If `len` is supplied it should be less than the current length of the
-  `Buffer`. `len` defaults to the entire `Buffer`'s contents.
-  Returns `char*`, `len`
+  `Buffer`. `len` defaults to the entire `Buffer`'s contents. The optional
+  `off` offsets the returned `char *` from the beginning of the `Buffer`'s
+  contents.  Returns `char*`, `len`
 
 buf:tail()
 : returns `char*`, `len` to the tail of the allocated `Buffer` that's not
-  currently in use.
+  currently in use
 
 buf:bump(len)
 : moves the marker for in use bytes by `len`
@@ -73,7 +74,7 @@ buf:bump(len)
 buf:trim([len])
 : marks `len` bytes of the `Buffer` as available for reuse. If `len` is not
   supplied to entire `Buffer` is marked. Returns `n`, the number of bytes
-  trimmed.
+  trimmed
 
 ```lua
 local buf = d.Buffer()
@@ -85,6 +86,9 @@ ffi.string(buf:value())  -- "foo"
 
 buf:write("bar")
 ffi.string(buf:value())  -- "foobar"
+
+ffi.string(buf:value(3))  -- "foo"
+ffi.string(buf:value(3, 1))  -- "b"
 
 buf:trim()
 ffi.string(buf:value())  -- ""
