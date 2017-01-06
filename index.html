@@ -99,6 +99,9 @@
             <li class="second-level"><a href="#network">Network</a></li>
             
         
+            <li class="second-level"><a href="#http">HTTP</a></li>
+            
+        
     
         <li class="first-level "><a href="#objects-io">Objects: IO</a></li>
         
@@ -109,6 +112,15 @@
             
         
             <li class="second-level"><a href="#iostream">io.Stream</a></li>
+            
+        
+    
+        <li class="first-level "><a href="#objects-http">Objects: HTTP</a></li>
+        
+            <li class="second-level"><a href="#httpclient">HTTP.Client</a></li>
+            
+        
+            <li class="second-level"><a href="#httpserver">HTTP.Server</a></li>
             
         
     
@@ -272,6 +284,63 @@ while true do
 end
 </code></pre>
 
+<h2 id="http">HTTP</h2>
+<dl>
+<dt>h.http:dial([endpoint|host], options)</dt>
+<dd><code>endpoint|host</code> is a string. Returns <code>err</code>, <a href="#httpclient">HTTP.Client</a></dd>
+</dl>
+<p>Options are:</p>
+<ul>
+<li>
+<p><code>local</code>: path to unix domain socket (TBD) <em>OR</em></p>
+</li>
+<li>
+<p><code>port</code>: port to connect to</p>
+</li>
+<li>
+<p><code>host</code>: host to connect to (default: localhost)</p>
+</li>
+<li>
+<p><code>timeout</code>: timeout for reads and writes on this connection</p>
+</li>
+<li>
+<p><code>connect_timeout</code>: timeout to apply to connection</p>
+</li>
+<li>
+<p><code>tls</code>: upgrade this connection to use tls. Note <code>timeout</code> also applies to the
+  tls handshake. The value is a table of <a href="#misc-tls-options">TLS Options</a>.</p>
+</li>
+</ul>
+<dl>
+<dt>h.http:listen(endpoint|options)</dt>
+<dd>Binds to <code>endpoint</code> string or as specified with <code>options</code> and listens for
+  streamed connections. Returns <code>err</code>, <a href="#TDB">Recver</a>. The Recver yields <code>err</code>,
+  <a href="#httpserver">HTTP.Server</a> for each accepted connection.</dd>
+</dl>
+<p>Options are:</p>
+<ul>
+<li>
+<p><code>local</code>: path to unix domain socket (TBD) <em>OR</em></p>
+</li>
+<li>
+<p><code>port</code>: port to bind to (default: 0)</p>
+</li>
+<li>
+<p><code>host</code>: host to bind to (default: localhost)</p>
+</li>
+<li>
+<p><code>backlog</code>: the maximum length for the queue of pending connections (default:
+  256)</p>
+</li>
+<li>
+<p><code>timeout</code>: sets the read / write timeout for accepted connections</p>
+</li>
+<li>
+<p><code>tls</code>: upgrade accepted connections to use tls. Note <code>timeout</code> also
+  applies to the tls handshake. The value is a table of <a href="#misc-tls-options">TLS
+  Options</a>.</p>
+</li>
+</ul>
 <h1 id="objects-io">Objects: IO</h1>
 <h2 id="ior">io.R</h2>
 <dl>
@@ -305,6 +374,9 @@ end
   If <code>n</code> is not supplied this call will block until one successful read has
   been made.</dd>
 </dl>
+<h1 id="objects-http">Objects: HTTP</h1>
+<h2 id="httpclient">HTTP.Client</h2>
+<h2 id="httpserver">HTTP.Server</h2>
 <h1 id="misc-tls-options">Misc: TLS Options</h1>
 <pre><code>  Certificate Authority:
     ca = BYTES            # root certificates from string
@@ -502,5 +574,5 @@ data.foo  -- &quot;bar&quot;
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-01-06 17:59:45
+Build Date UTC : 2017-01-06 18:35:33
 -->
