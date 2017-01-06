@@ -53,9 +53,9 @@ buf:ensure([bytes])
 : ensures the `Buffer` has *at least* `bytes` available of allocated space, in
   addition to what's currently in use.
 
-buf:write(s, [len])
-: copies `s` into the tail of the `Buffer`. `s` can either be a `char *` or a
-  `string`. `len` defaults to `#s`. Write ensures the buffer is large enough to
+buf:write(buf, [len])
+: copies `buf` into the tail of the `Buffer`. `buf` can either be a `char *` or a
+  `string`. `len` defaults to `#buf`. Write ensures the buffer is large enough to
   hold the write and bumps the `Buffer`'s content marker.
 
 buf:value([len])
@@ -136,8 +136,9 @@ r:stream()
 
 ## io.W
 
-w:write(buf, len)
-: Writes `len` bytes of `buf`. Returns `err`.
+w:write(buf, [len])
+: Writes `buf`. `buf` can either be a `char *` or a `string`. `len` defaults to
+  `#buf`.  Returns `err`.
 
 ## io.Stream
 
