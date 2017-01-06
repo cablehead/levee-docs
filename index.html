@@ -194,20 +194,21 @@ reuse.</p>
 <dt>buf:write(buf, [len])</dt>
 <dd>copies <code>buf</code> into the tail of the <code>Buffer</code>. <code>buf</code> can either be a <code>char *</code> or a
   <code>string</code>. <code>len</code> defaults to <code>#buf</code>. Write ensures the buffer is large enough to
-  hold the write and bumps the <code>Buffer</code>'s content marker.</dd>
-<dt>buf:value([len])</dt>
+  hold the write and bumps the <code>Buffer</code>'s content marker</dd>
+<dt>buf:value([[off], len])</dt>
 <dd>If <code>len</code> is supplied it should be less than the current length of the
-  <code>Buffer</code>. <code>len</code> defaults to the entire <code>Buffer</code>'s contents.
-  Returns <code>char*</code>, <code>len</code></dd>
+  <code>Buffer</code>. <code>len</code> defaults to the entire <code>Buffer</code>'s contents. The optional
+  <code>off</code> offsets the returned <code>char *</code> from the beginning of the <code>Buffer</code>'s
+  contents.  Returns <code>char*</code>, <code>len</code></dd>
 <dt>buf:tail()</dt>
 <dd>returns <code>char*</code>, <code>len</code> to the tail of the allocated <code>Buffer</code> that's not
-  currently in use.</dd>
+  currently in use</dd>
 <dt>buf:bump(len)</dt>
 <dd>moves the marker for in use bytes by <code>len</code></dd>
 <dt>buf:trim([len])</dt>
 <dd>marks <code>len</code> bytes of the <code>Buffer</code> as available for reuse. If <code>len</code> is not
   supplied to entire <code>Buffer</code> is marked. Returns <code>n</code>, the number of bytes
-  trimmed.</dd>
+  trimmed</dd>
 </dl>
 <pre><code class="lua">local buf = d.Buffer()
 
@@ -218,6 +219,9 @@ ffi.string(buf:value())  -- &quot;foo&quot;
 
 buf:write(&quot;bar&quot;)
 ffi.string(buf:value())  -- &quot;foobar&quot;
+
+ffi.string(buf:value(3))  -- &quot;foo&quot;
+ffi.string(buf:value(3, 1))  -- &quot;b&quot;
 
 buf:trim()
 ffi.string(buf:value())  -- &quot;&quot;
@@ -498,5 +502,5 @@ end
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-01-06 06:37:35
+Build Date UTC : 2017-01-06 17:15:41
 -->
