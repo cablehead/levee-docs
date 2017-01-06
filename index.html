@@ -191,9 +191,9 @@ reuse.</p>
 <dt>buf:ensure([bytes])</dt>
 <dd>ensures the <code>Buffer</code> has <em>at least</em> <code>bytes</code> available of allocated space, in
   addition to what's currently in use.</dd>
-<dt>buf:write(s, [len])</dt>
-<dd>copies <code>s</code> into the tail of the <code>Buffer</code>. <code>s</code> can either be a <code>char *</code> or a
-  <code>string</code>. <code>len</code> defaults to <code>#s</code>. Write ensures the buffer is large enough to
+<dt>buf:write(buf, [len])</dt>
+<dd>copies <code>buf</code> into the tail of the <code>Buffer</code>. <code>buf</code> can either be a <code>char *</code> or a
+  <code>string</code>. <code>len</code> defaults to <code>#buf</code>. Write ensures the buffer is large enough to
   hold the write and bumps the <code>Buffer</code>'s content marker.</dd>
 <dt>buf:value([len])</dt>
 <dd>If <code>len</code> is supplied it should be less than the current length of the
@@ -261,8 +261,9 @@ data.foo  -- &quot;bar&quot;
 </dl>
 <h2 id="iow">io.W</h2>
 <dl>
-<dt>w:write(buf, len)</dt>
-<dd>Writes <code>len</code> bytes of <code>buf</code>. Returns <code>err</code>.</dd>
+<dt>w:write(buf, [len])</dt>
+<dd>Writes <code>buf</code>. <code>buf</code> can either be a <code>char *</code> or a <code>string</code>. <code>len</code> defaults to
+  <code>#buf</code>.  Returns <code>err</code>.</dd>
 </dl>
 <h2 id="iostream">io.Stream</h2>
 <p>A stream is a combination of an <a href="#ior">io.R</a> and a <a href="#dbuffer">d.Buffer</a>.</p>
@@ -497,5 +498,5 @@ end
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-01-06 06:34:47
+Build Date UTC : 2017-01-06 06:37:35
 -->
