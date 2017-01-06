@@ -105,6 +105,9 @@
             <li class="second-level"><a href="#dbuffer">d.Buffer</a></li>
             
         
+            <li class="second-level"><a href="#diovec">d.Iovec</a></li>
+            
+        
     
         <li class="first-level "><a href="#requireleveep">require("levee").p</a></li>
         
@@ -209,15 +212,22 @@ reuse.</p>
 <pre><code class="lua">local buf = d.Buffer()
 
 buf:ensure(3)
-
 ffi.copy(buf:tail(), &quot;foo&quot;)
 buf:bump(3)
 ffi.string(buf:value())  -- &quot;foo&quot;
+
+buf:write(&quot;bar&quot;)
+ffi.string(buf:value())  -- &quot;foobar&quot;
 
 buf:trim()
 ffi.string(buf:value())  -- &quot;&quot;
 </code></pre>
 
+<h2 id="diovec">d.Iovec</h2>
+<dl>
+<dt>d.Iovec([size])</dt>
+<dd><em>todo</em></dd>
+</dl>
 <h1 id="requireleveep">require("levee").p</h1>
 <p><strong>p</strong> is for parsing / protocol jobbies</p>
 <h2 id="pjson">p.json</h2>
@@ -487,5 +497,5 @@ end
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-01-06 06:22:40
+Build Date UTC : 2017-01-06 06:34:47
 -->
