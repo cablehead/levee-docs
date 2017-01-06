@@ -79,10 +79,12 @@ buf:trim([len])
 local buf = d.Buffer()
 
 buf:ensure(3)
-
 ffi.copy(buf:tail(), "foo")
 buf:bump(3)
 ffi.string(buf:value())  -- "foo"
+
+buf:write("bar")
+ffi.string(buf:value())  -- "foobar"
 
 buf:trim()
 ffi.string(buf:value())  -- ""
