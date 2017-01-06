@@ -88,6 +88,12 @@ buf:trim()
 ffi.string(buf:value())  -- ""
 ```
 
+## d.Iovec
+
+d.Iovec([size])
+: *todo*
+
+
 # require("levee").p
 
 **p** is for parsing / protocol jobbies
