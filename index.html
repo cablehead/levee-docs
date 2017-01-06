@@ -188,8 +188,14 @@ reuse.</p>
 <dt>buf:ensure([bytes])</dt>
 <dd>ensures the <code>Buffer</code> has <em>at least</em> <code>bytes</code> available of allocated space, in
   addition to what's currently in use.</dd>
-<dt>buf:value()</dt>
-<dd>returns <code>char*</code>, <code>len</code> of the current contents of the <code>Buffer</code></dd>
+<dt>buf:write(s, [len])</dt>
+<dd>copies <code>s</code> into the tail of the <code>Buffer</code>. <code>s</code> can either be a <code>char *</code> or a
+  <code>string</code>. <code>len</code> defaults to <code>#s</code>. Write ensures the buffer is large enough to
+  hold the write and bumps the <code>Buffer</code>'s content marker.</dd>
+<dt>buf:value([len])</dt>
+<dd>If <code>len</code> is supplied it should be less than the current length of the
+  <code>Buffer</code>. <code>len</code> defaults to the entire <code>Buffer</code>'s contents.
+  Returns <code>char*</code>, <code>len</code></dd>
 <dt>buf:tail()</dt>
 <dd>returns <code>char*</code>, <code>len</code> to the tail of the allocated <code>Buffer</code> that's not
   currently in use.</dd>
@@ -481,5 +487,5 @@ end
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-01-05 00:46:07
+Build Date UTC : 2017-01-06 06:22:40
 -->
