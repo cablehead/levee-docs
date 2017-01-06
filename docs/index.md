@@ -53,8 +53,15 @@ buf:ensure([bytes])
 : ensures the `Buffer` has *at least* `bytes` available of allocated space, in
   addition to what's currently in use.
 
-buf:value()
-: returns `char*`, `len` of the current contents of the `Buffer`
+buf:write(s, [len])
+: copies `s` into the tail of the `Buffer`. `s` can either be a `char *` or a
+  `string`. `len` defaults to `#s`. Write ensures the buffer is large enough to
+  hold the write and bumps the `Buffer`'s content marker.
+
+buf:value([len])
+: If `len` is supplied it should be less than the current length of the
+  `Buffer`. `len` defaults to the entire `Buffer`'s contents.
+  Returns `char*`, `len`
 
 buf:tail()
 : returns `char*`, `len` to the tail of the allocated `Buffer` that's not
