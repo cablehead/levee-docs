@@ -256,7 +256,22 @@ stream:readin([n])
 ## Network
 
 \_.endpoint_in(host, port)
-: Returns `ep` an IPV4 [Endpoint](#endpoint) for the given `host` and `port`.
+: Returns `ep`, an IPV4 [Endpoint](#endpoint) for the given `host` and `port`.
+
+\_.endpoint_unix(name)
+: Returns `ep`, a Unix Domain [Endpoint](#endpoint) for the given path `name`.
+
+\_.socket(domain, socktype, [protocol])
+: Returns `err`, `no`. `protocol` defaults to `0`
+
+_.connect = function(no, endpoint)
+: Connects socket `no` to endpoint `endpoint`. Returns `err`, `no`
+
+_.bind = function(no, endpoint)
+: Binds socket `no` to endpoint `endpoint`. Returns `err`, `no`
+
+_.listen = function(no, endpoint, [backlog])
+: Binds and listens socket `no` to endpoint `endpoint`. Returns `err`, `no`
 
 \_.sendto(no, who, buf, len)
 : Sends `buf`, `len` over file descriptor `no` to [Endpoint](#endpoint) `who`. Returns
