@@ -62,7 +62,7 @@ h.stream:dial(endpoint|options)
 
 Options are:
 
-- `local`: path to unix domain socket (TBD) *OR*
+- `unix`: path to unix domain socket (TBD) *OR*
 
 - `port`: port to connect to
 
@@ -82,7 +82,7 @@ h.stream:listen(endpoint|options)
 
 Options are:
 
-- `local`: path to unix domain socket (TBD) *OR*
+- `unix`: path to unix domain socket (TBD) *OR*
 
 - `port`: port to bind to (default: 0)
 
@@ -122,7 +122,7 @@ h.http:dial([endpoint|host], options)
 
 Options are:
 
-- `local`: path to unix domain socket (TBD) *OR*
+- `unix`: path to unix domain socket (TBD) *OR*
 
 - `port`: port to connect to
 
@@ -142,7 +142,7 @@ h.http:listen(endpoint|options)
 
 Options are:
 
-- `local`: path to unix domain socket (TBD) *OR*
+- `unix`: path to unix domain socket (TBD) *OR*
 
 - `port`: port to bind to (default: 0)
 
@@ -200,7 +200,6 @@ stream:readin([n])
 ## HTTP.Client
 
 ## HTTP.Server
-
 
 # Misc: TLS Options
 
