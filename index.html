@@ -428,7 +428,17 @@ end
 <h2 id="network_1">Network</h2>
 <dl>
 <dt>_.endpoint_in(host, port)</dt>
-<dd>Returns <code>ep</code> an IPV4 <a href="#endpoint">Endpoint</a> for the given <code>host</code> and <code>port</code>.</dd>
+<dd>Returns <code>ep</code>, an IPV4 <a href="#endpoint">Endpoint</a> for the given <code>host</code> and <code>port</code>.</dd>
+<dt>_.endpoint_unix(name)</dt>
+<dd>Returns <code>ep</code>, a Unix Domain <a href="#endpoint">Endpoint</a> for the given path <code>name</code>.</dd>
+<dt>_.socket(domain, socktype, [protocol])</dt>
+<dd>Returns <code>err</code>, <code>no</code>. <code>protocol</code> defaults to <code>0</code></dd>
+<dt>_.connect = function(no, endpoint)</dt>
+<dd>Connects socket <code>no</code> to endpoint <code>endpoint</code>. Returns <code>err</code>, <code>no</code></dd>
+<dt>_.bind = function(no, endpoint)</dt>
+<dd>Binds socket <code>no</code> to endpoint <code>endpoint</code>. Returns <code>err</code>, <code>no</code></dd>
+<dt>_.listen = function(no, endpoint, [backlog])</dt>
+<dd>Binds and listens socket <code>no</code> to endpoint <code>endpoint</code>. Returns <code>err</code>, <code>no</code></dd>
 <dt>_.sendto(no, who, buf, len)</dt>
 <dd>Sends <code>buf</code>, <code>len</code> over file descriptor <code>no</code> to <a href="#endpoint">Endpoint</a> <code>who</code>. Returns
   <code>err</code>, <code>n</code>, where <code>n</code> is the number of characters sent on success.</dd>
@@ -574,5 +584,5 @@ data.foo  -- &quot;bar&quot;
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-01-25 02:08:46
+Build Date UTC : 2017-01-25 23:13:50
 -->
