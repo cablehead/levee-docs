@@ -115,6 +115,22 @@ while true do
 end
 ```
 
+## Process
+
+h.process:spawn(path, [options])
+: Spawns the binary specified by `path`, and returns a `child` object to
+  interact with the child process.
+
+Options are:
+
+- `argv`: list of command line arguments
+
+- `io`: a table that describes how to treat the child processes IO. By default
+  the `STDIN` and `STDOUT` of the child process are captured, and available to
+  written to, and read from the parent process. It's possible to assign the
+  child's `STDIN` and `STDOUT` to a specific file descriptor. By setting `STDIN
+  = 0` or `STDOUT = 1`, the child's stdin and stdout will be left unchanged.
+
 ## HTTP
 
 h.http:dial([endpoint|host], options)
