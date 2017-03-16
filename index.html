@@ -99,6 +99,9 @@
             <li class="second-level"><a href="#network">Network</a></li>
             
         
+            <li class="second-level"><a href="#process">Process</a></li>
+            
+        
             <li class="second-level"><a href="#http">HTTP</a></li>
             
         
@@ -284,6 +287,25 @@ while true do
 end
 </code></pre>
 
+<h2 id="process">Process</h2>
+<dl>
+<dt>h.process:spawn(path, [options])</dt>
+<dd>Spawns the binary specified by <code>path</code>, and returns a <code>child</code> object to
+  interact with the child process.</dd>
+</dl>
+<p>Options are:</p>
+<ul>
+<li>
+<p><code>argv</code>: list of command line arguments</p>
+</li>
+<li>
+<p><code>io</code>: a table that describes how to treat the child processes IO. By default
+  the <code>STDIN</code> and <code>STDOUT</code> of the child process are captured, and available to
+  written to, and read from the parent process. It's possible to assign the
+  child's <code>STDIN</code> and <code>STDOUT</code> to a specific file descriptor. By setting <code>STDIN
+  = 0</code> or <code>STDOUT = 1</code>, the child's stdin and stdout will be left unchanged.</p>
+</li>
+</ul>
 <h2 id="http">HTTP</h2>
 <dl>
 <dt>h.http:dial([endpoint|host], options)</dt>
@@ -584,5 +606,5 @@ data.foo  -- &quot;bar&quot;
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-01-25 23:13:50
+Build Date UTC : 2017-03-16 23:21:25
 -->
