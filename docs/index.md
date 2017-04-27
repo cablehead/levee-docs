@@ -194,11 +194,43 @@ r:readinto(buf, n)
 r:stream()
 : Returns an [io.Stream](#iostream)
 
+r:recvfd():
+: Receives a file descriptor and possibly a `d.Iovec`. `r` must be a Unix
+  socket. For single and forked processes, `io.socketpair` can be used to
+  create this socket along with the sending socket (the one that calls
+  `sendfd`). Returns `err`, `fd`, `iov`.
+
+```lua
+
+local levee = require("levee")
+local d = require("levee").d
+
+local h = levee.Hub()
+
+local r, w = h.io:socketpair(C.AF_UNIX, C.SOCK_STREAM)
+local iov = d.Iovec(1)
+local out = h.io:stdout()
+
+out:write("My name is what?\n")
+iov:write("Slim Shady\n")
+w:sendfd(out.no, iov)
+
+err, fd, iov = r:recvfd()
+out = h.io:w(fd)
+out:write(iov:string())
+```
+
 ## io.W
 
 w:write(buf, [len])
 : Writes `buf`. `buf` can either be a `char *` or a `string`. `len` defaults to
   `#buf`.  Returns `err`.
+
+w:sendfd(fd, [iov]):
+: Sends a file descriptor, `fd`, and an optional `d.Iovec`, `iov`.  `w`
+  must be a Unix socket. For single and forked processes, `io.socketpair`
+  can be used to create this socket along with the receiving socket (the
+  one that calls `recvfd`). Returns `err`
 
 ## io.Stream
 
