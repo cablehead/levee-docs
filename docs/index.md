@@ -125,11 +125,43 @@ Options are:
 
 - `argv`: list of command line arguments
 
-- `io`: a table that describes how to treat the child processes IO. By default
-  the `STDIN` and `STDOUT` of the child process are captured, and available to
-  written to, and read from the parent process. It's possible to assign the
-  child's `STDIN` and `STDOUT` to a specific file descriptor. By setting `STDIN
-  = 0` or `STDOUT = 1`, the child's stdin and stdout will be left unchanged.
+- `io`: a table that describes how to treat the child process' IO. By
+  default the `STDIN`, `STDOUT` and `STDERR` of the child process are
+  captured and available to the parent process, for writing and reading,
+  through the variables `stdin`, `stdout` and `stderr`. Alternatively, it's
+  possible to assign the child's `STDIN`, `STDOUT` and `STDERR` to a
+  specific file descriptor. By setting `STDIN = 0`, `STDOUT = 1` or `STDERR
+  = 2`, the child's `stdin`, `stdout` or `stderr` will be left
+  unchanged. Addtionally, it is possible to assign an arbitrary file
+  descriptor to another file descriptor. This is useful when the child
+  wants to write to the parent without using `STDOUT` or `STDERR`. In this
+  case, the child must know the value of the writing file descriptor ahead
+  of time.
+
+```lua
+local levee = require("levee")
+local _ = levee._
+
+local h = levee.Hub()
+
+local parent_r, parent_w = _.pipe()
+local stdout_r, stdout_w = _.pipe()
+
+local cmd_fd_no = 1020
+local cmd_fd_path = _.path.join("/dev/fd", tostring(cmd_fd_no))
+
+local cmd = "tee"
+local cmd_args = {cmd_fd_path}
+local io_args = {[cmd_fd_no]=parent_w, STDOUT=stdout_w}
+local child = h.process:spawn(cmd, {argv=cmd_args, io=io_args})
+
+child.stdin:write("foo")
+print(_.reads(parent_r)) -- foo
+print(_.reads(stdout_r)) -- foo
+
+child.stdin:close()
+child.done:recv()
+```
 
 ## HTTP
 
