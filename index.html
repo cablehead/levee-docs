@@ -299,13 +299,44 @@ end
 <p><code>argv</code>: list of command line arguments</p>
 </li>
 <li>
-<p><code>io</code>: a table that describes how to treat the child process' IO. By default
-  the <code>STDIN</code> and <code>STDOUT</code> of the child process are captured, and available to
-  written to, and read from the parent process. It's possible to assign the
-  child's <code>STDIN</code> and <code>STDOUT</code> to a specific file descriptor. By setting <code>STDIN
-  = 0</code> or <code>STDOUT = 1</code>, the child's stdin and stdout will be left unchanged.</p>
+<p><code>io</code>: a table that describes how to treat the child process' IO. By
+  default the <code>STDIN</code>, <code>STDOUT</code> and <code>STDERR</code> of the child process are
+  captured and available to the parent process, for writing and reading,
+  through the variables <code>stdin</code>, <code>stdout</code> and <code>stderr</code>. Alternatively, it's
+  possible to assign the child's <code>STDIN</code>, <code>STDOUT</code> and <code>STDERR</code> to a
+  specific file descriptor. By setting <code>STDIN = 0</code>, <code>STDOUT = 1</code> or <code>STDERR
+  = 2</code>, the child's <code>stdin</code>, <code>stdout</code> or <code>stderr</code> will be left
+  unchanged. Addtionally, it is possible to assign an arbitrary file
+  descriptor to another file descriptor. This is useful when the child
+  wants to write to the parent without using <code>STDOUT</code> or <code>STDERR</code>. In this
+  case, the child must know the value of the writing file descriptor ahead
+  of time.</p>
 </li>
 </ul>
+<pre><code class="lua">local levee = require(&quot;levee&quot;)
+local _ = levee._
+
+local h = levee.Hub()
+
+local parent_r, parent_w = _.pipe()
+local stdout_r, stdout_w = _.pipe()
+
+local cmd_fd_no = 1020
+local cmd_fd_path = _.path.join(&quot;/dev/fd&quot;, tostring(cmd_fd_no))
+
+local cmd = &quot;tee&quot;
+local cmd_args = {cmd_fd_path}
+local io_args = {[cmd_fd_no]=parent_w, STDOUT=stdout_w}
+local child = h.process:spawn(cmd, {argv=cmd_args, io=io_args})
+
+child.stdin:write(&quot;foo&quot;)
+print(_.reads(parent_r)) -- foo
+print(_.reads(stdout_r)) -- foo
+
+child.stdin:close()
+child.done:recv()
+</code></pre>
+
 <h2 id="http">HTTP</h2>
 <dl>
 <dt>h.http:dial([endpoint|host], options)</dt>
@@ -379,12 +410,41 @@ end
   <code>err</code>.</dd>
 <dt>r:stream()</dt>
 <dd>Returns an <a href="#iostream">io.Stream</a></dd>
+<dt>r:recvfd():</dt>
+<dd>Receives a file descriptor and possibly a <code>d.Iovec</code>. <code>r</code> must be a Unix
+  socket. For single and forked processes, <code>io.socketpair</code> can be used to
+  create this socket along with the sending socket (the one that calls
+  <code>sendfd</code>). Returns <code>err</code>, <code>fd</code>, <code>iov</code>.</dd>
 </dl>
+<pre><code class="lua">
+local levee = require(&quot;levee&quot;)
+local d = require(&quot;levee&quot;).d
+
+local h = levee.Hub()
+
+local r, w = h.io:socketpair(C.AF_UNIX, C.SOCK_STREAM)
+local iov = d.Iovec(1)
+local out = h.io:stdout()
+
+out:write(&quot;My name is what?\n&quot;)
+iov:write(&quot;Slim Shady\n&quot;)
+w:sendfd(out.no, iov)
+
+err, fd, iov = r:recvfd()
+out = h.io:w(fd)
+out:write(iov:string())
+</code></pre>
+
 <h2 id="iow">io.W</h2>
 <dl>
 <dt>w:write(buf, [len])</dt>
 <dd>Writes <code>buf</code>. <code>buf</code> can either be a <code>char *</code> or a <code>string</code>. <code>len</code> defaults to
   <code>#buf</code>.  Returns <code>err</code>.</dd>
+<dt>w:sendfd(fd, [iov]):</dt>
+<dd>Sends a file descriptor, <code>fd</code>, and an optional <code>d.Iovec</code>, <code>iov</code>.  <code>w</code>
+  must be a Unix socket. For single and forked processes, <code>io.socketpair</code>
+  can be used to create this socket along with the receiving socket (the
+  one that calls <code>recvfd</code>). Returns <code>err</code></dd>
 </dl>
 <h2 id="iostream">io.Stream</h2>
 <p>A stream is a combination of an <a href="#ior">io.R</a> and a <a href="#dbuffer">d.Buffer</a>.</p>
@@ -605,6 +665,6 @@ data.foo  -- &quot;bar&quot;
 </html>
 
 <!--
-MkDocs version : 0.16.1
-Build Date UTC : 2017-05-04 21:47:50
+MkDocs version : 0.16.3
+Build Date UTC : 2017-05-04 21:55:08
 -->
