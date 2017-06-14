@@ -165,7 +165,7 @@ child.done:recv()
 
 ## HTTP
 
-h.http:dial([endpoint|host], options)
+h.http:connect([endpoint|host], options)
 : `endpoint|host` is a string. Returns `err`, [HTTP.Client](#httpclient)
 
 Options are:
