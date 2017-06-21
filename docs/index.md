@@ -332,15 +332,15 @@ stream:readin([n])
 # Objects: DNS
 
 h.dns:resolve(name, [type], [options])
-: Queries a DNS server using the domain `name` and record `type`. `type`
+: Queries DNS server(s) for the domain `name` with record `type`. `type`
   defaults to `A`. A UDP connection is established to the first name server
   in `/etc/resolv.conf`. A failure will cause the next name server in this
-  file to tried, and so on. A maximum of three servers are tried. The
+  file to be tried, and so on. A maximum of three servers are tried. The
   name server's `host` and `port` and the file `/etc/resolv.conf` can be
-  overriden using `options` (see below). `host` and `port` will replace
+  overriden using `options` (see below). `host` and/or `port` will replace
   **all** of the entries in `/etc/resolv.conf` or its overriding
-  equivalent. Returns `err`, `records` where `records` is an array of
-  tables with the fields:
+  equivalent, if they are specified. Returns `err`, `records` where
+  `records` is an array of tables with the fields:
 
 - `name`: the domain name used in the query
 
@@ -359,7 +359,7 @@ Options are:
 
 - `timeout`: timeout for reads on this connection
 
-- `resconf`: path to a file which substitutes `/etc/resolv.conf`
+- `resconf`: path to a file which overrides `/etc/resolv.conf`
 
 # require("levee").\_
 
