@@ -163,48 +163,6 @@ child.stdin:close()
 child.done:recv()
 ```
 
-## HTTP
-
-h.http:connect([endpoint|host], options)
-: `endpoint|host` is a string. Returns `err`, [HTTP.Client](#httpclient)
-
-Options are:
-
-- `unix`: path to unix domain socket (TBD) *OR*
-
-- `port`: port to connect to
-
-- `host`: host to connect to (default: localhost)
-
-- `timeout`: timeout for reads and writes on this connection
-
-- `connect_timeout`: timeout to apply to connection
-
-- `tls`: upgrade this connection to use tls. Note `timeout` also applies to the
-  tls handshake. The value is a table of [TLS Options](#misc-tls-options).
-
-h.http:listen(endpoint|options)
-: Binds to `endpoint` string or as specified with `options` and listens for
-  streamed connections. Returns `err`, [Recver](#TDB). The Recver yields `err`,
-  [HTTP.Server](#httpserver) for each accepted connection.
-
-Options are:
-
-- `unix`: path to unix domain socket (TBD) *OR*
-
-- `port`: port to bind to (default: 0)
-
-- `host`: host to bind to (default: localhost)
-
-- `backlog`: the maximum length for the queue of pending connections (default:
-  256)
-
-- `timeout`: sets the read / write timeout for accepted connections
-
-- `tls`: upgrade accepted connections to use tls. Note `timeout` also
-  applies to the tls handshake. The value is a table of [TLS
-  Options](#misc-tls-options).
-
 # Objects: IO
 
 ## io.R
