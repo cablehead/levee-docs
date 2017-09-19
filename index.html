@@ -102,7 +102,14 @@
             <li class="second-level"><a href="#process">Process</a></li>
             
         
+    
+        <li class="first-level "><a href="#protocol-conveniences">Protocol Conveniences</a></li>
+        
             <li class="second-level"><a href="#http">HTTP</a></li>
+            
+                <li class="third-level"><a href="#client-side-methods">Client side methods</a></li>
+            
+                <li class="third-level"><a href="#serve-side-methods">Serve side methods</a></li>
             
         
     
@@ -120,14 +127,17 @@
     
         <li class="first-level "><a href="#objects-http">Objects: HTTP</a></li>
         
-            <li class="second-level"><a href="#httpclient">HTTP.Client</a></li>
+            <li class="second-level"><a href="#http-request">HTTP Request</a></li>
             
         
-            <li class="second-level"><a href="#httpserver">HTTP.Server</a></li>
+            <li class="second-level"><a href="#http-response">HTTP Response</a></li>
             
         
     
         <li class="first-level "><a href="#misc-tls-options">Misc: TLS Options</a></li>
+        
+    
+        <li class="first-level "><a href="#objects-dns">Objects: DNS</a></li>
         
     
         <li class="first-level "><a href="#requirelevee95">require("levee")._</a></li>
@@ -337,63 +347,64 @@ child.stdin:close()
 child.done:recv()
 </code></pre>
 
+<h1 id="protocol-conveniences">Protocol Conveniences</h1>
 <h2 id="http">HTTP</h2>
+<h3 id="client-side-methods">Client side methods</h3>
 <dl>
-<dt>h.http:dial([endpoint|host], options)</dt>
-<dd><code>endpoint|host</code> is a string. Returns <code>err</code>, <a href="#httpclient">HTTP.Client</a></dd>
+<dt>.p.http:write_request(method, path, params, headers, body)</dt>
+<dd>writes a <a href="#http-request">HTTP Request</a>. Returns <code>err</code>.</dd>
+<dt>.p.http:read_response()</dt>
+<dd>read a <a href="#http-response">HTTP Response</a>. Returns <code>err</code>, <code>res</code>.</dd>
 </dl>
-<p>Options are:</p>
-<ul>
-<li>
-<p><code>unix</code>: path to unix domain socket (TBD) <em>OR</em></p>
-</li>
-<li>
-<p><code>port</code>: port to connect to</p>
-</li>
-<li>
-<p><code>host</code>: host to connect to (default: localhost)</p>
-</li>
-<li>
-<p><code>timeout</code>: timeout for reads and writes on this connection</p>
-</li>
-<li>
-<p><code>connect_timeout</code>: timeout to apply to connection</p>
-</li>
-<li>
-<p><code>tls</code>: upgrade this connection to use tls. Note <code>timeout</code> also applies to the
-  tls handshake. The value is a table of <a href="#misc-tls-options">TLS Options</a>.</p>
-</li>
-</ul>
+<pre><code class="lua">local err = conn.p.http:write_request(&quot;GET&quot;, &quot;/foo&quot;, {a = &quot;b&quot;})
+local err, res = conn.p.http:read_response()
+</code></pre>
+
 <dl>
-<dt>h.http:listen(endpoint|options)</dt>
-<dd>Binds to <code>endpoint</code> string or as specified with <code>options</code> and listens for
-  streamed connections. Returns <code>err</code>, <a href="#TDB">Recver</a>. The Recver yields <code>err</code>,
-  <a href="#httpserver">HTTP.Server</a> for each accepted connection.</dd>
+<dt>.p.http:get(path, [options])</dt>
+<dd>convenience to write a GET <a href="#http-request">Request</a> and read it's
+  <a href="#http-response">Response</a>. Returns <code>err</code>, <code>res</code>. <code>options</code> should be a Lua
+  table with optional attributes: <code>params</code>, <code>headers</code>.</dd>
+<dt>.p.http:head(path, [options])</dt>
+<dd>convenience to write a HEAD <a href="#http-request">Request</a> and read it's
+  <a href="#http-response">Response</a>. Returns <code>err</code>, <code>res</code>. <code>options</code> should be a Lua
+  table with optional attributes: <code>params</code>, <code>headers</code>.</dd>
+<dt>.p.http:post(path, [options])</dt>
+<dd>convenience to write a POST <a href="#http-request">Request</a> and read it's
+  <a href="#http-response">Response</a>. Returns <code>err</code>, <code>res</code>. <code>options</code> should be a Lua
+  table with optional attributes: <code>params</code>, <code>headers</code>, <code>data</code></dd>
+<dt>.p.http:put(path, [options])</dt>
+<dd>convenience to write a PUT <a href="#http-request">Request</a> and read it's
+  <a href="#http-response">Response</a>. Returns <code>err</code>, <code>res</code>. <code>options</code> should be a Lua
+  table with optional attributes: <code>params</code>, <code>headers</code>, <code>data</code></dd>
 </dl>
-<p>Options are:</p>
-<ul>
-<li>
-<p><code>unix</code>: path to unix domain socket (TBD) <em>OR</em></p>
-</li>
-<li>
-<p><code>port</code>: port to bind to (default: 0)</p>
-</li>
-<li>
-<p><code>host</code>: host to bind to (default: localhost)</p>
-</li>
-<li>
-<p><code>backlog</code>: the maximum length for the queue of pending connections (default:
-  256)</p>
-</li>
-<li>
-<p><code>timeout</code>: sets the read / write timeout for accepted connections</p>
-</li>
-<li>
-<p><code>tls</code>: upgrade accepted connections to use tls. Note <code>timeout</code> also
-  applies to the tls handshake. The value is a table of <a href="#misc-tls-options">TLS
-  Options</a>.</p>
-</li>
-</ul>
+<h3 id="serve-side-methods">Serve side methods</h3>
+<dl>
+<dt>.p.http:read_request()</dt>
+<dd>read a <a href="#http-request">HTTP Request</a>. Returns <code>err</code>, <code>req</code>.  The <code>.http</code>
+  attribute is directly callable to provide an iterator convenience for
+  yielding all <a href="#http-request">HTTP Request</a> for a connection</dd>
+<dt>.p.http::write_response(status, headers, body)</dt>
+<dd>write a <a href="#http-response">HTTP Response</a>. <code>status</code> can be number or a
+  <code>levee.p.http.status</code>. <code>headers</code> can be a Lua table or a d.Map. <code>body</code> can be
+  a number or a string, to indicate this is a Content-Length response. If it's
+  a number the caller is responsible for writing that many bytes. If <code>body</code> is
+  <code>nil</code> it indicates this response is <code>Transfer-Encoding: chunked</code>. The caller
+  should use successive <code>:write_chunk</code> to write the body. Returns <code>err</code>.</dd>
+</dl>
+<pre><code class="lua">local err, req = conn.p.http:read_request() -- or
+
+for req in conn.p.http do
+    conn.p.http:write_response(200, nil, &quot;Hello&quot;)
+end
+</code></pre>
+
+<dl>
+<dt>.p.http::write_chunk(chunk)</dt>
+<dd>writes a chunk. <code>chunk</code> can be a number or a string. If it's a number the
+  caller is responsible for writing that many bytes. If <code>chunk</code> is <code>nil</code> it
+  indicates this is the final chunk of the body. Returns <code>err</code>.</dd>
+</dl>
 <h1 id="objects-io">Objects: IO</h1>
 <h2 id="ior">io.R</h2>
 <dl>
@@ -457,8 +468,8 @@ out:write(iov:string())
   been made.</dd>
 </dl>
 <h1 id="objects-http">Objects: HTTP</h1>
-<h2 id="httpclient">HTTP.Client</h2>
-<h2 id="httpserver">HTTP.Server</h2>
+<h2 id="http-request">HTTP Request</h2>
+<h2 id="http-response">HTTP Response</h2>
 <h1 id="misc-tls-options">Misc: TLS Options</h1>
 <pre><code>  Certificate Authority:
     ca = BYTES            # root certificates from string
@@ -505,6 +516,49 @@ out:write(iov:string())
     }
 </code></pre>
 
+<h1 id="objects-dns">Objects: DNS</h1>
+<dl>
+<dt>h.dns:resolve(name, [type], [options])</dt>
+<dd>Queries DNS server(s) for the domain <code>name</code> with record <code>type</code>. <code>type</code>
+  defaults to <code>A</code>. A UDP connection is established to the first name server
+  in <code>/etc/resolv.conf</code>. A failure will cause the next name server in this
+  file to be tried, and so on. A maximum of three servers are tried. The
+  name server's <code>host</code> and <code>port</code> and the file <code>/etc/resolv.conf</code> can be
+  overriden using <code>options</code> (see below). <code>host</code> and/or <code>port</code> will replace
+  <strong>all</strong> of the entries in <code>/etc/resolv.conf</code> or its overriding
+  equivalent, if they are specified. Returns <code>err</code>, <code>records</code> where
+  <code>records</code> is an array of tables with the fields:</dd>
+</dl>
+<ul>
+<li>
+<p><code>name</code>: the domain name used in the query</p>
+</li>
+<li>
+<p><code>type</code>: the record type, one of A, NS, CNAME, SOA, PTR, MX, TXT, AAAA
+  SRV, OPT, SSHFP, SPF, AXFR.</p>
+</li>
+<li>
+<p><code>record</code>: the record data, for types A and AAAA this is the IP address</p>
+</li>
+<li>
+<p><code>ttl</code>: the time in seconds that the record may be cached</p>
+</li>
+</ul>
+<p>Options are:</p>
+<ul>
+<li>
+<p><code>port</code>: name server port to connect to (default: 53)</p>
+</li>
+<li>
+<p><code>host</code>: name server host to connect to</p>
+</li>
+<li>
+<p><code>timeout</code>: timeout for reads on this connection</p>
+</li>
+<li>
+<p><code>resconf</code>: path to a file which overrides <code>/etc/resolv.conf</code></p>
+</li>
+</ul>
 <h1 id="requirelevee95">require("levee")._</h1>
 <p><strong>_</strong> is for utilities</p>
 <h2 id="network_1">Network</h2>
@@ -665,6 +719,6 @@ data.foo  -- &quot;bar&quot;
 </html>
 
 <!--
-MkDocs version : 0.16.3
-Build Date UTC : 2017-05-04 21:55:08
+MkDocs version : 0.16.1
+Build Date UTC : 2017-09-19 06:20:02
 -->
