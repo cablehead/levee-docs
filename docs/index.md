@@ -53,7 +53,6 @@ end
 h.io:stdout()
 : Returns an [io.W](#w) object to work with this processes stdout
 
-
 ## Network
 
 h.stream:dial(endpoint|options)
@@ -163,6 +162,71 @@ child.stdin:close()
 child.done:recv()
 ```
 
+# Protocol Conveniences
+
+## HTTP
+
+### Client side methods
+
+.p.http:write_request(method, path, params, headers, body)
+: writes a [HTTP Request](#http-request). Returns `err`.
+
+.p.http:read_response()
+: read a [HTTP Response](#http-response). Returns `err`, `res`.
+
+```lua
+local err = conn.p.http:write_request("GET", "/foo", {a = "b"})
+local err, res = conn.p.http:read_response()
+```
+
+.p.http:get(path, [options])
+: convenience to write a GET [Request](#http-request) and read it's
+  [Response](#http-response). Returns `err`, `res`. `options` should be a Lua
+  table with optional attributes: `params`, `headers`.
+
+.p.http:head(path, [options])
+: convenience to write a HEAD [Request](#http-request) and read it's
+  [Response](#http-response). Returns `err`, `res`. `options` should be a Lua
+  table with optional attributes: `params`, `headers`.
+
+.p.http:post(path, [options])
+: convenience to write a POST [Request](#http-request) and read it's
+  [Response](#http-response). Returns `err`, `res`. `options` should be a Lua
+  table with optional attributes: `params`, `headers`, `data`
+
+.p.http:put(path, [options])
+: convenience to write a PUT [Request](#http-request) and read it's
+  [Response](#http-response). Returns `err`, `res`. `options` should be a Lua
+  table with optional attributes: `params`, `headers`, `data`
+
+### Serve side methods
+
+.p.http:read_request()
+: read a [HTTP Request](#http-request). Returns `err`, `req`.  The `.http`
+  attribute is directly callable to provide an iterator convenience for
+  yielding all [HTTP Request](#http-request) for a connection
+
+.p.http::write_response(status, headers, body)
+: write a [HTTP Response](#http-response). `status` can be number or a
+  `levee.p.http.status`. `headers` can be a Lua table or a d.Map. `body` can be
+  a number or a string, to indicate this is a Content-Length response. If it's
+  a number the caller is responsible for writing that many bytes. If `body` is
+  `nil` it indicates this response is `Transfer-Encoding: chunked`. The caller
+  should use successive `:write_chunk` to write the body. Returns `err`.
+
+```lua
+local err, req = conn.p.http:read_request() -- or
+
+for req in conn.p.http do
+    conn.p.http:write_response(200, nil, "Hello")
+end
+```
+
+.p.http::write_chunk(chunk)
+: writes a chunk. `chunk` can be a number or a string. If it's a number the
+  caller is responsible for writing that many bytes. If `chunk` is `nil` it
+  indicates this is the final chunk of the body. Returns `err`.
+
 # Objects: IO
 
 ## io.R
@@ -235,9 +299,9 @@ stream:readin([n])
 
 # Objects: HTTP
 
-## HTTP.Client
+## HTTP Request
 
-## HTTP.Server
+## HTTP Response
 
 # Misc: TLS Options
 
