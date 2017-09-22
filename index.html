@@ -224,9 +224,10 @@ end
 </dl>
 <h2 id="network">Network</h2>
 <dl>
-<dt>h.stream:dial(endpoint|options)</dt>
-<dd>Establishes a streamed network connection based on the supplied <code>endpoint</code>
-  string or <code>options</code> (<code>endpoint</code> TBD). Returns <code>err</code>, <a href="#ior">io.RW</a></dd>
+<dt>h.stream:dial(port, [host] | uri | options)</dt>
+<dd>Establishes a streamed network connection based on the supplied <code>port</code> and
+  <code>host</code> (host defaults to 'localhost') a <code>uri</code> string (for example
+  'https://foo.com') or <code>options</code>. Returns <code>err</code>, <a href="#ior">io.RW</a></dd>
 </dl>
 <p>Options are:</p>
 <ul>
@@ -251,10 +252,11 @@ end
 </li>
 </ul>
 <dl>
-<dt>h.stream:listen(endpoint|options)</dt>
-<dd>Binds to <code>endpoint</code> string or as specified with <code>options</code> and listens for
-  streamed connections. Returns <code>err</code>, <a href="#TDB">Recver</a>. The Recver yields <code>err</code>,
-  <a href="#ior">io.RW</a> for each accepted connection.</dd>
+<dt>h.stream:listen([port, [host]] | options)</dt>
+<dd>Binds to <code>port</code> and <code>host</code> (port defaults to 0, host defaults to 'localhost')
+  or as specified with <code>options</code> and listens for streamed connections. Returns
+  <code>err</code>, <a href="#TDB">Recver</a>. The Recver yields <code>err</code>, <a href="#ior">io.RW</a> for each
+  accepted connection.</dd>
 </dl>
 <p>Options are:</p>
 <ul>
@@ -720,5 +722,5 @@ data.foo  -- &quot;bar&quot;
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-09-19 06:20:02
+Build Date UTC : 2017-09-22 06:54:58
 -->
