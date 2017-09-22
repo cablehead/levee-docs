@@ -55,9 +55,10 @@ h.io:stdout()
 
 ## Network
 
-h.stream:dial(endpoint|options)
-: Establishes a streamed network connection based on the supplied `endpoint`
-  string or `options` (`endpoint` TBD). Returns `err`, [io.RW](#ior)
+h.stream:dial(port, [host] | uri | options)
+: Establishes a streamed network connection based on the supplied `port` and
+  `host` (host defaults to 'localhost') a `uri` string (for example
+  'https://foo.com') or `options`. Returns `err`, [io.RW](#ior)
 
 Options are:
 
@@ -74,10 +75,11 @@ Options are:
 - `tls`: upgrade this connection to use tls. Note `timeout` also applies to the
   tls handshake. The value is a table of [TLS Options](#misc-tls-options).
 
-h.stream:listen(endpoint|options)
-: Binds to `endpoint` string or as specified with `options` and listens for
-  streamed connections. Returns `err`, [Recver](#TDB). The Recver yields `err`,
-  [io.RW](#ior) for each accepted connection.
+h.stream:listen([port, [host]] | options)
+: Binds to `port` and `host` (port defaults to 0, host defaults to 'localhost')
+  or as specified with `options` and listens for streamed connections. Returns
+  `err`, [Recver](#TDB). The Recver yields `err`, [io.RW](#ior) for each
+  accepted connection.
 
 Options are:
 
